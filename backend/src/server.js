@@ -28,7 +28,9 @@ app.use('/api/books', require('./routes/bookRoutes'));
 app.use('/api/borrow', require('./routes/borrowRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 app.use('/api/auth', require('./routes/authRoutes')); // ✅ এই লাইন যোগ করুন
-
+app.get('/', (req, res) => {
+  res.send('🚀 Book Management API is running! Visit /api/books to see data.');
+});
 // Test route
 app.get('/api/test', (req, res) => {
   res.json({
