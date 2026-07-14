@@ -11,6 +11,9 @@
   <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" alt="JWT"/>
 </p>
 
+### 🎯 **Live URL:** [https://book-management-gold-seven.vercel.app](https://book-management-gold-seven.vercel.app)
+
+
 ## 📖 Project Overview
 
 A **Full-Stack Book Management System** built with the **MERN** stack (MongoDB, Express.js, React.js, Node.js). This application allows users to **manage books**, **borrow/return books**, **write reviews**, and **track statistics** with a beautiful, responsive UI.
