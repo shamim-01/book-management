@@ -2,12 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   FaTrophy,
-  FaBullseye, // ✅ FaTarget এর পরিবর্তে FaBullseye
+  FaBullseye,
   FaSpinner,
   FaEdit,
   FaSave,
   FaTimes,
-  FaTarget, // ❌ সরান
   FaBook,
   FaStar,
 } from 'react-icons/fa';
@@ -106,8 +105,7 @@ const ReadingChallenge = () => {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-[#1F2E24] flex items-center gap-2">
-          <FaBullseye className="text-[#B08D57]" />{' '}
-          {/* ✅ FaTarget এর পরিবর্তে FaBullseye */}
+          <FaBullseye className="text-[#B08D57]" />
           {new Date().getFullYear()} Reading Challenge
         </h3>
         {challenge && !isEditing && (
@@ -121,7 +119,6 @@ const ReadingChallenge = () => {
       </div>
 
       {!challenge && !isEditing ? (
-        // Create Challenge
         <div className="text-center py-6">
           <p className="text-[#6B6354] mb-4">
             Set your reading goal for {new Date().getFullYear()}
@@ -146,7 +143,6 @@ const ReadingChallenge = () => {
           </div>
         </div>
       ) : isEditing ? (
-        // Edit Challenge
         <div className="flex items-center justify-center gap-3 py-4">
           <input
             type="number"
@@ -176,9 +172,7 @@ const ReadingChallenge = () => {
           </button>
         </div>
       ) : (
-        // View Challenge
         <div>
-          {/* Progress */}
           <div className="mb-4">
             <div className="flex justify-between text-sm text-[#6B6354] mb-1">
               <span>{challenge.current} books read</span>
@@ -198,7 +192,6 @@ const ReadingChallenge = () => {
             </div>
           </div>
 
-          {/* Completion Badge */}
           {isComplete && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
               <FaTrophy className="text-3xl text-yellow-500 mx-auto mb-1" />
@@ -211,7 +204,6 @@ const ReadingChallenge = () => {
             </div>
           )}
 
-          {/* Stats */}
           <div className="grid grid-cols-2 gap-3 mt-4">
             <div className="bg-[#F7F3E9] p-3 rounded text-center">
               <p className="text-xs text-[#6B6354]">Progress</p>
