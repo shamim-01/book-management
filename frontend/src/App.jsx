@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Books from './pages/Books';
+import BookDetails from './pages/BookDetails'; // ✅ যোগ করুন
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,7 +19,6 @@ import Profile from './pages/Profile';
 import BorrowedBooks from './pages/BorrowedBooks';
 import About from './pages/About';
 import ForgotPassword from './pages/ForgotPassword';
-// ✅ নতুন পেজ ইম্পোর্ট করুন
 import Wishlist from './pages/Wishlist';
 import ReadingHistory from './pages/ReadingHistory';
 
@@ -26,7 +26,6 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24]">
-        {/* ✅ Toaster Configuration */}
         <Toaster
           position="top-right"
           toastOptions={{
@@ -54,24 +53,17 @@ function App() {
           }}
         />
 
-        {/* ✅ Navbar */}
         <Navbar />
 
         <Routes>
-          {/* ============================================
-              ✅ PUBLIC ROUTES - Login ছাড়া দেখা যাবে
-              ============================================ */}
+          {/* ===== PUBLIC ROUTES ===== */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          {/* ============================================
-              ✅ PROTECTED ROUTES - Login করলেই দেখা যাবে
-              ============================================ */}
-
-          {/* 📚 Books */}
+          {/* ===== PROTECTED ROUTES ===== */}
           <Route
             path="/books"
             element={
@@ -81,7 +73,16 @@ function App() {
             }
           />
 
-          {/* 📊 Dashboard */}
+          {/* ✅ Book Details Route - NEW */}
+          <Route
+            path="/books/:id"
+            element={
+              <ProtectedRoute>
+                <BookDetails />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/dashboard"
             element={
@@ -91,7 +92,6 @@ function App() {
             }
           />
 
-          {/* 👤 Profile */}
           <Route
             path="/profile"
             element={
@@ -101,7 +101,6 @@ function App() {
             }
           />
 
-          {/* 📖 Borrowed Books */}
           <Route
             path="/borrowed"
             element={
@@ -111,7 +110,6 @@ function App() {
             }
           />
 
-          {/* ❤️ Wishlist - NEW */}
           <Route
             path="/wishlist"
             element={
@@ -121,7 +119,6 @@ function App() {
             }
           />
 
-          {/* 📖 Reading History - NEW */}
           <Route
             path="/history"
             element={
@@ -131,9 +128,7 @@ function App() {
             }
           />
 
-          {/* ============================================
-              ✅ 404 Not Found - Redirect to Home
-              ============================================ */}
+          {/* ===== 404 ===== */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
