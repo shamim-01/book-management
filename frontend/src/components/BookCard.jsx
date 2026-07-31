@@ -1,3 +1,4 @@
+// components/BookCard.js
 import React, { useState } from 'react';
 import BorrowModal from './BorrowModal';
 import ReviewModal from './ReviewModal';
@@ -8,15 +9,18 @@ import {
   FaStar,
   FaRegStar,
   FaStarHalfAlt,
+  FaHeart,
+  FaRegHeart,
+  FaSpinner,
 } from 'react-icons/fa';
 
-//  Import local images
+// Import local images
 import book1 from '../images/book1.jpg';
 import book2 from '../images/book2.jpg';
 import book3 from '../images/book3.jpg';
 import book4 from '../images/book4.jpg';
 
-//  Fallback image if import fails
+// Fallback image if import fails
 const fallbackImage =
   'https://dummyimage.com/400x300/3F6B4F/F7F3E9&text=No+Cover';
 
@@ -38,7 +42,17 @@ const getImageForBook = title => {
   return images[randomIndex];
 };
 
-const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
+const BookCard = ({
+  book,
+  onDelete,
+  onEdit,
+  onBorrow,
+  onReviewAdded,
+  onAddToWishlist,
+  onRemoveFromWishlist,
+  isInWishlist = false,
+  isAddingToWishlist = false,
+}) => {
   const [showBorrowModal, setShowBorrowModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
@@ -69,7 +83,7 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
     }
   };
 
-  //  Updated renderStars with half star support
+  // Render stars with half star support
   const renderStars = (rating = 0) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -89,12 +103,21 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
     return stars;
   };
 
-  //  Get the image source
+  // Get the image source
   const getImageSrc = () => {
     if (coverImage && coverImage.trim() !== '') {
       return coverImage;
     }
     return getImageForBook(title);
+  };
+
+  // Handle Wishlist toggle
+  const handleWishlistToggle = () => {
+    if (isInWishlist) {
+      onRemoveFromWishlist(_id);
+    } else {
+      onAddToWishlist(_id);
+    }
   };
 
   return (
@@ -113,8 +136,24 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
           {/* subtle vignette to match ink theme */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#132018]/60 via-transparent to-transparent"></div>
 
+          {/* ✅ Wishlist Button */}
+          <button
+            onClick={handleWishlistToggle}
+            disabled={isAddingToWishlist}
+            className="absolute top-3 right-3 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition disabled:opacity-50 hover:scale-110 transform duration-200"
+            title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          >
+            {isAddingToWishlist ? (
+              <FaSpinner className="animate-spin text-[#3F6B4F] text-lg" />
+            ) : isInWishlist ? (
+              <FaHeart className="text-red-500 text-lg" />
+            ) : (
+              <FaRegHeart className="text-[#6B6354] text-lg hover:text-red-500 transition" />
+            )}
+          </button>
+
           {/* Status Badge on Image */}
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 left-3">
             <span
               className={`px-3 py-1 text-[11px] font-medium uppercase tracking-wide rounded-full backdrop-blur-sm border ${
                 isAvailable
@@ -177,32 +216,54 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
             )}
           </div>
 
-          {/* Action Buttons - 4 Columns */}
-          <div className="mt-4 grid grid-cols-4 gap-2">
+          {/* Action Buttons - 5 Columns with Wishlist */}
+          <div className="mt-4 grid grid-cols-5 gap-2">
             {isAvailable ? (
               <button
                 onClick={() => setShowBorrowModal(true)}
                 className="col-span-1 bg-[#3F6B4F] text-white px-3 py-2 rounded-sm hover:bg-[#345A42] transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
               >
                 <FaBookOpen className="text-xs" />
-                <span>Borrow</span>
+                <span className="hidden sm:inline">Borrow</span>
               </button>
             ) : (
               <button
                 disabled
                 className="col-span-1 bg-[#B08D57]/10 text-[#8A7F68] px-3 py-2 rounded-sm cursor-not-allowed text-xs font-medium uppercase tracking-wide flex items-center justify-center border border-[#B08D57]/15"
               >
-                <span>Borrowed</span>
+                <span className="hidden sm:inline">Borrowed</span>
               </button>
             )}
 
-            {/*  Review Button */}
+            {/* Review Button */}
             <button
               onClick={() => setShowReviewModal(true)}
               className="col-span-1 bg-[#B08D57] hover:bg-[#C7A56C] text-[#132018] px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaStar className="text-xs" />
-              <span>Review</span>
+              <span className="hidden sm:inline">Review</span>
+            </button>
+
+            {/* ✅ Wishlist Button (mobile friendly) */}
+            <button
+              onClick={handleWishlistToggle}
+              disabled={isAddingToWishlist}
+              className={`col-span-1 px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1 ${
+                isInWishlist
+                  ? 'bg-red-50 border border-red-300 text-red-500 hover:bg-red-100'
+                  : 'border border-[#B08D57]/30 text-[#6B6354] hover:bg-[#B08D57]/10'
+              }`}
+            >
+              {isAddingToWishlist ? (
+                <FaSpinner className="animate-spin" />
+              ) : isInWishlist ? (
+                <FaHeart className="text-xs" />
+              ) : (
+                <FaRegHeart className="text-xs" />
+              )}
+              <span className="hidden sm:inline">
+                {isInWishlist ? 'Wishlist' : 'Wishlist'}
+              </span>
             </button>
 
             <button
@@ -210,7 +271,7 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
               className="col-span-1 border border-[#3F6B4F] text-[#3F6B4F] hover:bg-[#3F6B4F] hover:text-white px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaEdit className="text-xs" />
-              <span>Edit</span>
+              <span className="hidden sm:inline">Edit</span>
             </button>
 
             <button
@@ -224,8 +285,27 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
               className="col-span-1 border border-[#8A4A3A] text-[#8A4A3A] hover:bg-[#8A4A3A] hover:text-white px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaTrash className="text-xs" />
-              <span>Delete</span>
+              <span className="hidden sm:inline">Delete</span>
             </button>
+          </div>
+
+          {/* Mobile: Show button labels in a row */}
+          <div className="flex flex-wrap gap-1 mt-2 sm:hidden">
+            <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
+              Borrow
+            </span>
+            <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
+              Review
+            </span>
+            <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
+              Wishlist
+            </span>
+            <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
+              Edit
+            </span>
+            <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
+              Delete
+            </span>
           </div>
         </div>
       </div>

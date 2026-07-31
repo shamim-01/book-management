@@ -1,3 +1,4 @@
+// pages/Books.js
 import React, { useState, useEffect } from 'react';
 import {
   getBooks,
@@ -5,6 +6,9 @@ import {
   createBook,
   updateBook,
   borrowBook,
+  addToWishlist,
+  removeFromWishlist,
+  checkWishlist,
 } from '../services/api';
 import BookCard from '../components/BookCard';
 import BookForm from '../components/BookForm';
@@ -20,7 +24,9 @@ import {
   FaThLarge,
   FaList,
   FaGraduationCap,
+  FaHeart,
 } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -29,6 +35,8 @@ const Books = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
+  const [wishlistStatus, setWishlistStatus] = useState({});
+  const [addingToWishlist, setAddingToWishlist] = useState(null);
 
   useEffect(() => {
     fetchBooks();
@@ -38,12 +46,68 @@ const Books = () => {
     try {
       setLoading(true);
       const response = await getBooks();
-      setBooks(response.data.data || []);
-      setFilteredBooks(response.data.data || []);
+      console.log('📚 Books response:', response.data);
+
+      const booksData = response.data.data || response.data.books || [];
+      setBooks(booksData);
+      setFilteredBooks(booksData);
+
+      // Check wishlist status for each book
+      await checkWishlistStatus(booksData);
+
       setLoading(false);
     } catch (error) {
+      console.error('❌ Error fetching books:', error);
       toast.error('Failed to load books');
       setLoading(false);
+    }
+  };
+
+  // ✅ Check wishlist status for all books
+  const checkWishlistStatus = async booksData => {
+    try {
+      const status = {};
+      for (const book of booksData) {
+        try {
+          const check = await checkWishlist(book._id);
+          status[book._id] = check.data.inWishlist;
+        } catch (error) {
+          status[book._id] = false;
+        }
+      }
+      setWishlistStatus(status);
+    } catch (error) {
+      console.error('❌ Error checking wishlist:', error);
+    }
+  };
+
+  // ✅ Add to Wishlist
+  const handleAddToWishlist = async bookId => {
+    setAddingToWishlist(bookId);
+    try {
+      await addToWishlist(bookId);
+      setWishlistStatus(prev => ({ ...prev, [bookId]: true }));
+      toast.success('Added to wishlist ❤️');
+    } catch (error) {
+      console.error('❌ Error adding to wishlist:', error);
+      toast.error(error.response?.data?.message || 'Failed to add to wishlist');
+    } finally {
+      setAddingToWishlist(null);
+    }
+  };
+
+  // ✅ Remove from Wishlist
+  const handleRemoveFromWishlist = async bookId => {
+    setAddingToWishlist(bookId);
+    try {
+      await removeFromWishlist(bookId);
+      setWishlistStatus(prev => ({ ...prev, [bookId]: false }));
+      toast.success('Removed from wishlist 💔');
+    } catch (error) {
+      console.error('❌ Error removing from wishlist:', error);
+      toast.error('Failed to remove from wishlist');
+    } finally {
+      setAddingToWishlist(null);
     }
   };
 
@@ -52,8 +116,8 @@ const Books = () => {
     if (filters.q) {
       filtered = filtered.filter(
         book =>
-          book.title.toLowerCase().includes(filters.q.toLowerCase()) ||
-          book.author.toLowerCase().includes(filters.q.toLowerCase()),
+          book.title?.toLowerCase().includes(filters.q.toLowerCase()) ||
+          book.author?.toLowerCase().includes(filters.q.toLowerCase()),
       );
     }
     if (filters.genre) {
@@ -80,6 +144,7 @@ const Books = () => {
       const updatedBooks = [response.data.data, ...books];
       setBooks(updatedBooks);
       setFilteredBooks(updatedBooks);
+      await checkWishlistStatus(updatedBooks);
       toast.success('Book added successfully! 🎉');
       setShowForm(false);
       setEditingBook(null);
@@ -99,6 +164,7 @@ const Books = () => {
       );
       setBooks(updatedBooks);
       setFilteredBooks(updatedBooks);
+      await checkWishlistStatus(updatedBooks);
       toast.success('Book updated successfully! 🎉');
       setShowForm(false);
       setEditingBook(null);
@@ -125,6 +191,12 @@ const Books = () => {
       const updatedBooks = books.filter(book => book._id !== id);
       setBooks(updatedBooks);
       setFilteredBooks(updatedBooks);
+      // Remove from wishlist status
+      setWishlistStatus(prev => {
+        const newStatus = { ...prev };
+        delete newStatus[id];
+        return newStatus;
+      });
       toast.success('Book deleted successfully! 🗑️');
     } catch (error) {
       toast.error('Failed to delete book');
@@ -192,7 +264,6 @@ const Books = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Hero Header */}
         <div className="relative overflow-hidden bg-[#132018] rounded-sm shadow-xl mb-10">
-          {/* Book-spine texture bars */}
           <div className="absolute inset-0 flex opacity-[0.08]">
             {Array.from({ length: 24 }).map((_, i) => (
               <div
@@ -240,20 +311,28 @@ const Books = () => {
                 </div>
               </div>
 
-              <button
-                onClick={() => {
-                  console.log('🔄 Toggle form');
-                  setEditingBook(null);
-                  setShowForm(!showForm);
-                }}
-                className="group inline-flex items-center gap-2 bg-[#B08D57] hover:bg-[#C7A56C]
-                         text-[#132018] px-6 py-3 rounded-sm transition-all duration-300
-                         font-semibold tracking-wide
-                         text-sm sm:text-base w-full sm:w-auto justify-center"
-              >
-                <FaPlus className="text-sm group-hover:rotate-90 transition-transform duration-300" />
-                {showForm ? 'Close Form' : 'Add New Book'}
-              </button>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  to="/wishlist"
+                  className="inline-flex items-center gap-2 bg-[#B08D57]/20 hover:bg-[#B08D57]/30 text-[#B08D57] px-4 py-2.5 rounded-sm transition-all duration-300 font-semibold tracking-wide text-sm"
+                >
+                  <FaHeart className="text-sm" />
+                  Wishlist
+                </Link>
+                <button
+                  onClick={() => {
+                    console.log('🔄 Toggle form');
+                    setEditingBook(null);
+                    setShowForm(!showForm);
+                  }}
+                  className="group inline-flex items-center gap-2 bg-[#B08D57] hover:bg-[#C7A56C]
+                           text-[#132018] px-6 py-3 rounded-sm transition-all duration-300
+                           font-semibold tracking-wide text-sm sm:text-base w-full sm:w-auto justify-center"
+                >
+                  <FaPlus className="text-sm group-hover:rotate-90 transition-transform duration-300" />
+                  {showForm ? 'Close Form' : 'Add New Book'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -406,6 +485,10 @@ const Books = () => {
                 onEdit={handleEdit}
                 onBorrow={handleBorrow}
                 onReviewAdded={handleReviewAdded}
+                onAddToWishlist={handleAddToWishlist}
+                onRemoveFromWishlist={handleRemoveFromWishlist}
+                isInWishlist={wishlistStatus[book._id] || false}
+                isAddingToWishlist={addingToWishlist === book._id}
               />
             ))}
           </div>
