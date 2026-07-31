@@ -1,4 +1,4 @@
-// pages/Dashboard.js
+// pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import {
   getDashboardStats,
@@ -16,9 +16,10 @@ import {
   FaArrowUp,
   FaHeart,
   FaStar,
-  FaTarget,
+  FaBullseye, // ✅ FaTarget এর পরিবর্তে FaBullseye
   FaTrophy,
   FaHistory,
+  FaExclamationCircle,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ReadingChallenge from '../components/ReadingChallenge';
