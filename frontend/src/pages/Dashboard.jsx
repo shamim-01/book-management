@@ -1,5 +1,11 @@
+// pages/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { getDashboardStats } from '../services/api';
+import {
+  getDashboardStats,
+  getWishlist,
+  getReadingStats,
+  getChallenge,
+} from '../services/api';
 import {
   FaBook,
   FaBookOpen,
@@ -8,10 +14,14 @@ import {
   FaSpinner,
   FaChartPie,
   FaArrowUp,
-  FaCheckCircle,
-  FaExclamationCircle,
+  FaHeart,
+  FaStar,
+  FaTarget,
+  FaTrophy,
+  FaHistory,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import ReadingChallenge from '../components/ReadingChallenge';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -23,28 +33,28 @@ const Dashboard = () => {
     genreStats: [],
     allBooks: [],
   });
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [readingStats, setReadingStats] = useState(null);
+  const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchStats();
+    fetchAllData();
   }, []);
 
-  const fetchStats = async () => {
+  const fetchAllData = async () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('📊 Fetching dashboard stats...');
+      console.log('📊 Fetching all dashboard data...');
 
-      const response = await getDashboardStats();
-      console.log('📊 Full Response:', response);
+      // Fetch dashboard stats
+      const statsResponse = await getDashboardStats();
+      console.log('📊 Dashboard Stats:', statsResponse.data);
 
-      if (response.data && response.data.success) {
-        const data = response.data.data;
-        console.log('📊 Total Books:', data.totalBooks);
-        console.log('📊 Available Books:', data.availableBooks);
-        console.log('📊 Recent Books:', data.recentBooks);
-
+      if (statsResponse.data && statsResponse.data.success) {
+        const data = statsResponse.data.data;
         setStats({
           totalBooks: data.totalBooks || 0,
           availableBooks: data.availableBooks || 0,
@@ -54,8 +64,30 @@ const Dashboard = () => {
           genreStats: data.genreStats || [],
           allBooks: data.allBooks || [],
         });
-      } else {
-        setError('Invalid response from server');
+      }
+
+      // Fetch wishlist
+      try {
+        const wishlistResponse = await getWishlist();
+        setWishlistCount(wishlistResponse.data.wishlist?.length || 0);
+      } catch (error) {
+        console.error('❌ Error fetching wishlist:', error);
+      }
+
+      // Fetch reading stats
+      try {
+        const readingResponse = await getReadingStats();
+        setReadingStats(readingResponse.data.stats);
+      } catch (error) {
+        console.error('❌ Error fetching reading stats:', error);
+      }
+
+      // Fetch challenge
+      try {
+        const challengeResponse = await getChallenge();
+        setChallenge(challengeResponse.data.challenge);
+      } catch (error) {
+        console.error('❌ Error fetching challenge:', error);
       }
 
       setLoading(false);
@@ -81,7 +113,7 @@ const Dashboard = () => {
           <FaChartPie className="absolute inset-0 m-auto text-[#3F6B4F] text-lg" />
         </div>
         <p className="text-[#5B5347] mt-4 tracking-wide text-sm uppercase">
-          Reading the ledger…
+          Loading your library...
         </p>
       </div>
     );
@@ -98,7 +130,7 @@ const Dashboard = () => {
             </h3>
             <p className="text-[#8A7F68] text-sm mb-6">{error}</p>
             <button
-              onClick={fetchStats}
+              onClick={fetchAllData}
               className="inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
                        px-6 py-2.5 rounded-sm hover:bg-[#C7A56C]
                        transition-all duration-300 font-semibold tracking-wide"
@@ -159,7 +191,7 @@ const Dashboard = () => {
               </div>
 
               <button
-                onClick={fetchStats}
+                onClick={fetchAllData}
                 className="inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
                          px-5 sm:px-6 py-2.5 rounded-sm hover:bg-[#C7A56C]
                          transition-all duration-300 font-semibold tracking-wide text-sm sm:text-base"
@@ -220,6 +252,91 @@ const Dashboard = () => {
               <p className="text-xs text-[#B08D57] mt-2">{card.sub}</p>
             </div>
           ))}
+        </div>
+
+        {/* ===== QUICK LINKS + STATS ROW ===== */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {/* Quick Links */}
+          <div className="bg-white border border-[#B08D57]/20 p-6 col-span-1">
+            <h3 className="font-semibold text-[#1F2E24] mb-4 text-sm uppercase tracking-wide">
+              Quick Links
+            </h3>
+            <div className="space-y-3">
+              <Link
+                to="/wishlist"
+                className="flex items-center gap-3 p-3 bg-[#F7F3E9] hover:bg-[#B08D57]/10 rounded transition group"
+              >
+                <FaHeart className="text-red-400 group-hover:scale-110 transition" />
+                <span className="text-sm font-medium text-[#1F2E24]">
+                  Wishlist
+                </span>
+                <span className="ml-auto text-xs bg-[#B08D57]/20 px-2 py-0.5 rounded">
+                  {wishlistCount}
+                </span>
+              </Link>
+              <Link
+                to="/history"
+                className="flex items-center gap-3 p-3 bg-[#F7F3E9] hover:bg-[#B08D57]/10 rounded transition group"
+              >
+                <FaHistory className="text-[#3F6B4F] group-hover:scale-110 transition" />
+                <span className="text-sm font-medium text-[#1F2E24]">
+                  Reading History
+                </span>
+              </Link>
+              <Link
+                to="/books"
+                className="flex items-center gap-3 p-3 bg-[#F7F3E9] hover:bg-[#B08D57]/10 rounded transition group"
+              >
+                <FaBook className="text-[#B08D57] group-hover:scale-110 transition" />
+                <span className="text-sm font-medium text-[#1F2E24]">
+                  Browse Books
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Reading Stats */}
+          {readingStats && (
+            <div className="bg-white border border-[#B08D57]/20 p-6 col-span-2">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-[#1F2E24] text-sm uppercase tracking-wide">
+                  <FaStar className="inline mr-2 text-yellow-500" />
+                  Reading Statistics
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-[#F7F3E9] p-3 rounded text-center">
+                  <p className="text-xs text-[#6B6354]">Books Read</p>
+                  <p className="text-xl font-bold text-[#1F2E24]">
+                    {readingStats.totalBooks || 0}
+                  </p>
+                </div>
+                <div className="bg-[#F7F3E9] p-3 rounded text-center">
+                  <p className="text-xs text-[#6B6354]">Pages</p>
+                  <p className="text-xl font-bold text-[#1F2E24]">
+                    {readingStats.totalPages || 0}
+                  </p>
+                </div>
+                <div className="bg-[#F7F3E9] p-3 rounded text-center">
+                  <p className="text-xs text-[#6B6354]">Avg Rating</p>
+                  <p className="text-xl font-bold text-[#1F2E24]">
+                    {readingStats.avgRating || 0}⭐
+                  </p>
+                </div>
+                <div className="bg-[#F7F3E9] p-3 rounded text-center">
+                  <p className="text-xs text-[#6B6354]">Favorite Genre</p>
+                  <p className="text-sm font-bold text-[#1F2E24] truncate">
+                    {readingStats.favoriteGenre || 'N/A'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ===== READING CHALLENGE ===== */}
+        <div className="mb-8">
+          <ReadingChallenge />
         </div>
 
         {/* ===== RECENT BOOKS ===== */}

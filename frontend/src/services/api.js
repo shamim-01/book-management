@@ -338,6 +338,174 @@ export const getBorrowsByBook = async bookId => {
 };
 
 // ============================================
+// ❤️ WISHLIST API CALLS
+// ============================================
+
+export const getWishlist = async () => {
+  console.log('📡 Fetching wishlist...');
+  try {
+    const response = await api.get('/wishlist');
+    console.log('✅ Wishlist fetched:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error fetching wishlist:', error);
+    throw error;
+  }
+};
+
+export const addToWishlist = async bookId => {
+  console.log(`❤️ Adding book ${bookId} to wishlist...`);
+  try {
+    const response = await api.post(`/wishlist/${bookId}`);
+    console.log('✅ Added to wishlist:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error adding to wishlist:', error);
+    throw error;
+  }
+};
+
+export const removeFromWishlist = async bookId => {
+  console.log(`💔 Removing book ${bookId} from wishlist...`);
+  try {
+    const response = await api.delete(`/wishlist/${bookId}`);
+    console.log('✅ Removed from wishlist:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error removing from wishlist:', error);
+    throw error;
+  }
+};
+
+export const checkWishlist = async bookId => {
+  console.log(`🔍 Checking wishlist for book ${bookId}...`);
+  try {
+    const response = await api.get(`/wishlist/check/${bookId}`);
+    console.log('✅ Wishlist check:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error checking wishlist:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// 🎯 READING CHALLENGE API CALLS
+// ============================================
+
+export const getChallenge = async year => {
+  console.log(`📡 Fetching reading challenge for year ${year || 'current'}...`);
+  try {
+    const response = await api.get(`/challenge${year ? `?year=${year}` : ''}`);
+    console.log('✅ Challenge fetched:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error fetching challenge:', error);
+    throw error;
+  }
+};
+
+export const createChallenge = async data => {
+  console.log('🎯 Creating reading challenge:', data);
+  try {
+    const response = await api.post('/challenge', data);
+    console.log('✅ Challenge created:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error creating challenge:', error);
+    throw error;
+  }
+};
+
+export const updateChallenge = async (id, data) => {
+  console.log(`✏️ Updating challenge ${id}:`, data);
+  try {
+    const response = await api.put(`/challenge/${id}`, data);
+    console.log('✅ Challenge updated:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error updating challenge:', error);
+    throw error;
+  }
+};
+
+export const deleteChallenge = async id => {
+  console.log(`🗑️ Deleting challenge ${id}...`);
+  try {
+    const response = await api.delete(`/challenge/${id}`);
+    console.log('✅ Challenge deleted:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error deleting challenge:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// 📖 READING HISTORY API CALLS
+// ============================================
+
+export const getHistory = async () => {
+  console.log('📡 Fetching reading history...');
+  try {
+    const response = await api.get('/history');
+    console.log('✅ History fetched:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error fetching history:', error);
+    throw error;
+  }
+};
+
+export const addHistory = async data => {
+  console.log('📝 Adding to reading history:', data);
+  try {
+    const response = await api.post('/history', data);
+    console.log('✅ Added to history:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error adding to history:', error);
+    throw error;
+  }
+};
+
+export const updateHistory = async (id, data) => {
+  console.log(`✏️ Updating history ${id}:`, data);
+  try {
+    const response = await api.put(`/history/${id}`, data);
+    console.log('✅ History updated:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error updating history:', error);
+    throw error;
+  }
+};
+
+export const deleteHistory = async id => {
+  console.log(`🗑️ Deleting history ${id}...`);
+  try {
+    const response = await api.delete(`/history/${id}`);
+    console.log('✅ History deleted:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error deleting history:', error);
+    throw error;
+  }
+};
+
+export const getReadingStats = async () => {
+  console.log('📊 Fetching reading statistics...');
+  try {
+    const response = await api.get('/history/stats');
+    console.log('✅ Stats fetched:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error fetching stats:', error);
+    throw error;
+  }
+};
+
+// ============================================
 // 📊 DASHBOARD API CALLS
 // ============================================
 

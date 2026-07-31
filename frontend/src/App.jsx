@@ -17,7 +17,10 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import BorrowedBooks from './pages/BorrowedBooks';
 import About from './pages/About';
-import ForgotPassword from './pages/ForgotPassword'; // ✅ নতুন যোগ করুন
+import ForgotPassword from './pages/ForgotPassword';
+// ✅ নতুন পেজ ইম্পোর্ট করুন
+import Wishlist from './pages/Wishlist';
+import ReadingHistory from './pages/ReadingHistory';
 
 function App() {
   return (
@@ -51,20 +54,24 @@ function App() {
           }}
         />
 
-        {/* ✅ Navbar - শুধু Public রাউটে দেখাবে না */}
+        {/* ✅ Navbar */}
         <Navbar />
 
         <Routes>
-          {/* ✅ Public Routes - Login ছাড়া দেখা যাবে */}
+          {/* ============================================
+              ✅ PUBLIC ROUTES - Login ছাড়া দেখা যাবে
+              ============================================ */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
-
-          {/* ✅ Forgot Password Route - Public */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          {/* ✅ Protected Routes - Login করলেই দেখা যাবে */}
+          {/* ============================================
+              ✅ PROTECTED ROUTES - Login করলেই দেখা যাবে
+              ============================================ */}
+
+          {/* 📚 Books */}
           <Route
             path="/books"
             element={
@@ -73,6 +80,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* 📊 Dashboard */}
           <Route
             path="/dashboard"
             element={
@@ -81,6 +90,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* 👤 Profile */}
           <Route
             path="/profile"
             element={
@@ -89,6 +100,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* 📖 Borrowed Books */}
           <Route
             path="/borrowed"
             element={
@@ -98,7 +111,29 @@ function App() {
             }
           />
 
-          {/* ✅ 404 Not Found - Redirect to Home */}
+          {/* ❤️ Wishlist - NEW */}
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <Wishlist />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 📖 Reading History - NEW */}
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <ReadingHistory />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ============================================
+              ✅ 404 Not Found - Redirect to Home
+              ============================================ */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

@@ -48,6 +48,9 @@ app.use('/api/borrow', require('./routes/borrowRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+app.use('/api/challenge', require('./routes/challengeRoutes'));
+app.use('/api/history', require('./routes/historyRoutes'));
 
 // Root Route
 app.get('/', (req, res) => {

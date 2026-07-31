@@ -1,3 +1,4 @@
+// components/Navbar.js
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -14,6 +15,8 @@ import {
   FaSignInAlt,
   FaUserPlus,
   FaLock,
+  FaHeart,
+  FaHistory,
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -21,12 +24,13 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [wishlistCount, setWishlistCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
   const isActive = path => location.pathname === path;
 
-  //  Check if user is logged in on mount
+  // Check if user is logged in on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -41,28 +45,51 @@ const Navbar = () => {
           setUserName('User');
         }
       }
+      // Fetch wishlist count
+      fetchWishlistCount();
     } else {
       setIsLoggedIn(false);
       setUserName('');
+      setWishlistCount(0);
     }
   }, [location]);
 
-  //  Logout Handler
+  // Fetch wishlist count
+  const fetchWishlistCount = async () => {
+    try {
+      const { getWishlist } = await import('../services/api');
+      const response = await getWishlist();
+      setWishlistCount(response.data.wishlist?.length || 0);
+    } catch (error) {
+      console.error('❌ Error fetching wishlist count:', error);
+    }
+  };
+
+  // Logout Handler
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUserName('');
+    setWishlistCount(0);
     toast.success('Logged out successfully! 👋');
     navigate('/login');
   };
 
-  //  All Navigation Links
+  // All Navigation Links
   const allNavLinks = [
     { path: '/', icon: FaHome, label: 'Home', public: true },
     { path: '/books', icon: FaBook, label: 'Books', public: false },
     { path: '/borrowed', icon: FaBookReader, label: 'Borrowed', public: false },
     { path: '/dashboard', icon: FaChartBar, label: 'Dashboard', public: false },
+    {
+      path: '/wishlist',
+      icon: FaHeart,
+      label: 'Wishlist',
+      public: false,
+      badge: true,
+    },
+    { path: '/history', icon: FaHistory, label: 'History', public: false },
     { path: '/profile', icon: FaUser, label: 'Profile', public: false },
     { path: '/about', icon: FaInfoCircle, label: 'About', public: true },
   ];
@@ -81,7 +108,7 @@ const Navbar = () => {
             </div>
             <div>
               <span className="font-serif text-xl font-bold tracking-tight text-white">
-                Book Management
+                Book Manager
               </span>
               <span className="hidden sm:inline-block text-xs text-[#B08D57] ml-2 font-mono">
                 v2.0
@@ -94,6 +121,8 @@ const Navbar = () => {
             {navLinks.map(link => {
               const Icon = link.icon;
               const active = isActive(link.path);
+              const showBadge = link.badge && wishlistCount > 0;
+
               return (
                 <Link
                   key={link.path}
@@ -109,6 +138,11 @@ const Navbar = () => {
                   <span className="text-sm font-medium tracking-wide">
                     {link.label}
                   </span>
+                  {showBadge && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {wishlistCount}
+                    </span>
+                  )}
                   {active && (
                     <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-[#B08D57] rounded-full"></span>
                   )}
@@ -119,7 +153,7 @@ const Navbar = () => {
               );
             })}
 
-            {/*  User Info & Login/Register/Logout */}
+            {/* User Info & Login/Register/Logout */}
             {isLoggedIn ? (
               <div className="flex items-center space-x-3 ml-4">
                 <span className="text-sm text-white/70 flex items-center gap-2">
@@ -202,6 +236,8 @@ const Navbar = () => {
             {navLinks.map(link => {
               const Icon = link.icon;
               const active = isActive(link.path);
+              const showBadge = link.badge && wishlistCount > 0;
+
               return (
                 <Link
                   key={link.path}
@@ -220,6 +256,11 @@ const Navbar = () => {
                     className={`text-lg ${active ? 'text-[#B08D57]' : 'text-white/50'}`}
                   />
                   <span className="text-sm font-medium">{link.label}</span>
+                  {showBadge && (
+                    <span className="ml-auto bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                      {wishlistCount}
+                    </span>
+                  )}
                   {active && (
                     <span className="ml-auto w-1.5 h-1.5 bg-[#B08D57] rounded-full"></span>
                   )}
