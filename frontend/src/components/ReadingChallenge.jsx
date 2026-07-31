@@ -1,12 +1,15 @@
-// components/ReadingChallenge.js
+// components/ReadingChallenge.jsx
 import React, { useState, useEffect } from 'react';
 import {
   FaTrophy,
-  FaTarget,
+  FaBullseye, // ✅ FaTarget এর পরিবর্তে FaBullseye
   FaSpinner,
   FaEdit,
   FaSave,
   FaTimes,
+  FaTarget, // ❌ সরান
+  FaBook,
+  FaStar,
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import {
@@ -103,7 +106,8 @@ const ReadingChallenge = () => {
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-[#1F2E24] flex items-center gap-2">
-          <FaTarget className="text-[#B08D57]" />
+          <FaBullseye className="text-[#B08D57]" />{' '}
+          {/* ✅ FaTarget এর পরিবর্তে FaBullseye */}
           {new Date().getFullYear()} Reading Challenge
         </h3>
         {challenge && !isEditing && (
