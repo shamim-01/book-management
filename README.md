@@ -1,4 +1,4 @@
-```markdown
+
 # 📚 Book Management System - Full Stack MERN Application
 
 <p align="center">
