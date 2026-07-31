@@ -332,7 +332,7 @@ VITE_API_URL=http://localhost:5000/api
 ## 🚀 Deployment
 
 ### **Backend (Render)**
-```bash
+```powershell
 1. Push code to GitHub
 2. Create new Web Service on Render
 3. Connect repository
@@ -343,142 +343,13 @@ VITE_API_URL=http://localhost:5000/api
 ```
 
 ### **Frontend (Vercel)**
-```bash
+```powershell
 1. Push code to GitHub
 2. Import project on Vercel
 3. Add environment variables
 4. Deploy
 ```
 
----
-
-## 📊 Database Schema
-
-### **User Model**
-```javascript
-{
-  name: String,
-  email: String,
-  password: String,
-  phone: String,
-  bio: String,
-  favoriteGenre: String,
-  joinDate: String,
-  totalBooksRead: Number,
-  avatar: String,
-  role: String,
-  isActive: Boolean,
-  lastLogin: Date
-}
-```
-
-### **Book Model**
-```javascript
-{
-  title: String,
-  author: String,
-  genre: String,
-  publishedYear: Number,
-  price: Number,
-  description: String,
-  coverImage: String,
-  isAvailable: Boolean,
-  rating: Number,
-  totalReviews: Number
-}
-```
-
-### **Borrow Model**
-```javascript
-{
-  user: ObjectId,
-  book: ObjectId,
-  borrowDate: Date,
-  returnDate: Date,
-  isReturned: Boolean
-}
-```
-
-### **Review Model**
-```javascript
-{
-  user: ObjectId,
-  book: ObjectId,
-  rating: Number,
-  comment: String,
-  createdAt: Date
-}
-```
-
-### **Wishlist Model**
-```javascript
-{
-  user: ObjectId,
-  book: ObjectId,
-  addedAt: Date
-}
-```
-
-### **ReadingChallenge Model**
-```javascript
-{
-  user: ObjectId,
-  year: Number,
-  target: Number,
-  current: Number,
-  progress: Number,
-  isCompleted: Boolean,
-  completedAt: Date
-}
-```
-
-### **ReadingHistory Model**
-```javascript
-{
-  user: ObjectId,
-  book: ObjectId,
-  startedDate: Date,
-  finishedDate: Date,
-  rating: Number,
-  review: String,
-  pagesRead: Number,
-  status: String
-}
-```
-
----
-
-## 🎯 User Flow
-
-### **1. Authentication Flow**
-```
-1. User Register → 2. User Login → 3. JWT Token → 4. Protected Routes Access
-```
-
-### **2. Book Management Flow**
-```
-1. View Books → 2. Search/Filter → 3. View Details → 4. Borrow/Review
-```
-
-### **3. Wishlist Flow**
-```
-1. Add to Wishlist ❤️ → 2. View Wishlist → 3. Remove from Wishlist 💔
-```
-
-### **4. Reading Challenge Flow**
-```
-1. Set Goal 🎯 → 2. Track Progress → 3. Complete Challenge 🏆
-```
-
-### **5. Reading History Flow**
-```
-1. Start Reading 📖 → 2. Update Progress → 3. Finish Reading ✅
-```
-
-### **6. Dashboard Flow**
-```
-1. Login → 2. View Stats → 3. Check Recent Books → 4. Track Progress
-```
 
 ---
 
@@ -495,16 +366,6 @@ VITE_API_URL=http://localhost:5000/api
 - [ ] Multi-language Support
 - [ ] Push Notifications
 - [ ] Book Reading Timer
-
----
-
-## 👨‍💻 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 
