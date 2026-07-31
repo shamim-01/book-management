@@ -1,4 +1,4 @@
-// pages/ForgotPassword.js
+// pages/ForgotPassword.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -23,14 +23,14 @@ const ForgotPassword = () => {
   const [timer, setTimer] = useState(0);
   const navigate = useNavigate();
 
-  // Handle Send OTP
+  // ✅ Step 1: Send OTP
   const handleSendOTP = async e => {
     e.preventDefault();
     setLoading(true);
 
     try {
       await forgotPassword({ email });
-      toast.success('OTP sent to your email! 📧');
+      toast.success('OTP sent! Check console for OTP');
       setStep(2);
       startTimer(60);
     } catch (error) {
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // Handle Verify OTP
+  // ✅ Step 2: Verify OTP
   const handleVerifyOTP = async e => {
     e.preventDefault();
     setLoading(true);
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // Handle Reset Password
+  // ✅ Step 3: Reset Password
   const handleResetPassword = async e => {
     e.preventDefault();
 
@@ -86,23 +86,20 @@ const ForgotPassword = () => {
     }
   };
 
-  // Resend OTP
+  // ✅ Resend OTP
   const handleResendOTP = async () => {
     setResendLoading(true);
-
     try {
       await forgotPassword({ email });
-      toast.success('New OTP sent! 📧');
+      toast.success('New OTP sent!');
       startTimer(60);
     } catch (error) {
-      console.error('❌ Resend OTP error:', error);
       toast.error('Failed to resend OTP');
     } finally {
       setResendLoading(false);
     }
   };
 
-  // Timer for resend
   const startTimer = duration => {
     setTimer(duration);
     const interval = setInterval(() => {
@@ -117,33 +114,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background texture */}
-      <div className="absolute inset-0 flex opacity-[0.05]">
-        {Array.from({ length: 24 }).map((_, i) => (
-          <div
-            key={i}
-            className="flex-1 border-r border-[#B08D57]"
-            style={{
-              backgroundColor: i % 3 === 0 ? '#B08D57' : 'transparent',
-            }}
-          />
-        ))}
-      </div>
-      <div className="absolute -top-24 -right-24 w-[24rem] h-[24rem] bg-[#3F6B4F]/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-32 -left-24 w-[22rem] h-[22rem] bg-[#B08D57]/10 rounded-full blur-3xl"></div>
-
-      {/* Back to Login */}
-      <Link
-        to="/login"
-        className="absolute top-6 left-6 text-[#8A7F68] hover:text-[#3F6B4F] transition flex items-center gap-2 text-sm group z-10"
-      >
-        <FaArrowLeft className="group-hover:-translate-x-1 transition" />
-        Back to Login
-      </Link>
-
+    <div className="min-h-screen bg-[#F7F3E9] flex items-center justify-center p-4">
       <div className="relative w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-sm rounded-sm shadow-2xl shadow-[#132018]/10 border border-[#B08D57]/25 p-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-sm shadow-2xl border border-[#B08D57]/25 p-8">
           {/* Progress Steps */}
           <div className="flex items-center justify-center gap-2 mb-6">
             {[1, 2, 3].map(s => (
@@ -245,6 +218,9 @@ const ForgotPassword = () => {
                       required
                     />
                   </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Check Render Logs for OTP
+                  </p>
                 </div>
 
                 <button

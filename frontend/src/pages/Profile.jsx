@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+// pages/Profile.js
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FaUser,
   FaEnvelope,
@@ -10,23 +12,76 @@ import {
   FaBook,
   FaHeart,
   FaCalendarAlt,
-  FaChartBar,
   FaStar,
+  FaSpinner,
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { getCurrentUser, updateProfile } from '../services/api';
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1 (234) 567-8900',
-    bio: '📚 Book lover and full-stack developer. Passionate about reading and building amazing applications.',
-    joinDate: 'January 2024',
-    favoriteGenre: 'Fiction',
-    totalBooksRead: 42,
-  });
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ✅ Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    fetchUser();
+  }, []);
+
+  // ✅ Fetch logged-in user data from API
+  const fetchUser = async () => {
+    try {
+      setLoading(true);
+      const response = await getCurrentUser();
+      console.log('✅ User data:', response.data);
+
+      if (response.data && response.data.user) {
+        setUser(response.data.user);
+        setFormData(response.data.user);
+      } else {
+        toast.error('Failed to load user data');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching user:', error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/login');
+      } else {
+        toast.error('Failed to load profile');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Handle Profile Update
+  const handleProfileUpdate = async e => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await updateProfile(formData);
+      setUser(response.data.user);
+      setIsEditing(false);
+      toast.success('Profile updated successfully! 🎉');
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+    } catch (error) {
+      console.error('❌ Update error:', error);
+      toast.error(error.response?.data?.message || 'Failed to update profile');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleChange = e => {
     setFormData({
@@ -35,24 +90,49 @@ const Profile = () => {
     });
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    setUser(formData);
-    setIsEditing(false);
-    toast.success('✅ Profile updated successfully!');
-  };
-
   const handleCancel = () => {
     setFormData(user);
     setIsEditing(false);
   };
+
+  // ✅ Loading State
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F7F3E9] flex items-center justify-center">
+        <div className="text-center">
+          <FaSpinner className="animate-spin text-4xl text-[#3F6B4F] mx-auto" />
+          <p className="mt-4 text-[#6B6354]">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ If no user, show message
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#F7F3E9] flex items-center justify-center">
+        <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+          <FaUserCircle className="text-6xl text-[#B08D57] mx-auto mb-4" />
+          <h2 className="text-2xl font-serif text-[#132018] mb-2">
+            No User Logged In
+          </h2>
+          <p className="text-[#6B6354]">Please login to view your profile</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="mt-4 bg-[#B08D57] text-[#132018] px-6 py-2 rounded hover:bg-[#C7A56C] transition"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* ===== HEADER ===== */}
         <div className="relative overflow-hidden bg-[#132018] rounded-sm shadow-xl mb-10">
-          {/* Book-spine texture bars */}
           <div className="absolute inset-0 flex opacity-[0.08]">
             {Array.from({ length: 24 }).map((_, i) => (
               <div
@@ -90,9 +170,7 @@ const Profile = () => {
 
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="inline-flex items-center gap-2 bg-[#B08D57] hover:bg-[#C7A56C]
-                         text-[#132018] px-5 sm:px-6 py-2.5 rounded-sm transition-all duration-300
-                         font-semibold tracking-wide text-sm sm:text-base"
+                className="inline-flex items-center gap-2 bg-[#B08D57] hover:bg-[#C7A56C] text-[#132018] px-5 sm:px-6 py-2.5 rounded-sm transition-all duration-300 font-semibold tracking-wide text-sm sm:text-base"
               >
                 {isEditing ? (
                   <>
@@ -138,7 +216,7 @@ const Profile = () => {
           <div className="pt-12 px-8 pb-8">
             {isEditing ? (
               // ===== EDIT FORM =====
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleProfileUpdate} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-xs font-medium text-[#6B6354] uppercase tracking-wide mb-1.5 flex items-center gap-2">
@@ -148,7 +226,7 @@ const Profile = () => {
                     <input
                       type="text"
                       name="name"
-                      value={formData.name}
+                      value={formData.name || ''}
                       onChange={handleChange}
                       className="w-full px-4 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white focus:outline-none focus:border-[#3F6B4F] transition"
                       required
@@ -162,7 +240,7 @@ const Profile = () => {
                     <input
                       type="email"
                       name="email"
-                      value={formData.email}
+                      value={formData.email || ''}
                       onChange={handleChange}
                       className="w-full px-4 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white focus:outline-none focus:border-[#3F6B4F] transition"
                       required
@@ -179,7 +257,7 @@ const Profile = () => {
                     <input
                       type="text"
                       name="phone"
-                      value={formData.phone}
+                      value={formData.phone || ''}
                       onChange={handleChange}
                       className="w-full px-4 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white focus:outline-none focus:border-[#3F6B4F] transition"
                     />
@@ -192,7 +270,7 @@ const Profile = () => {
                     <input
                       type="text"
                       name="favoriteGenre"
-                      value={formData.favoriteGenre}
+                      value={formData.favoriteGenre || ''}
                       onChange={handleChange}
                       className="w-full px-4 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white focus:outline-none focus:border-[#3F6B4F] transition"
                     />
@@ -206,7 +284,7 @@ const Profile = () => {
                   </label>
                   <textarea
                     name="bio"
-                    value={formData.bio}
+                    value={formData.bio || ''}
                     onChange={handleChange}
                     rows="3"
                     className="w-full px-4 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white focus:outline-none focus:border-[#3F6B4F] transition"
@@ -217,19 +295,20 @@ const Profile = () => {
                 <div className="flex gap-3 pt-2">
                   <button
                     type="submit"
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-[#3F6B4F]
-                             text-white py-3 rounded-sm hover:bg-[#345A42]
-                             transition-all duration-300 text-sm font-medium uppercase tracking-wide"
+                    disabled={isSubmitting}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-[#3F6B4F] text-white py-3 rounded-sm hover:bg-[#345A42] transition-all duration-300 text-sm font-medium uppercase tracking-wide disabled:opacity-50"
                   >
-                    <FaSave className="text-sm" />
-                    Save Changes
+                    {isSubmitting ? (
+                      <FaSpinner className="animate-spin" />
+                    ) : (
+                      <FaSave className="text-sm" />
+                    )}
+                    {isSubmitting ? 'Saving...' : 'Save Changes'}
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="flex-1 inline-flex items-center justify-center gap-2 border border-[#B08D57]/40
-                             text-[#6B6354] py-3 rounded-sm hover:bg-[#B08D57]/10
-                             transition-all duration-300 text-sm font-medium uppercase tracking-wide"
+                    className="flex-1 inline-flex items-center justify-center gap-2 border border-[#B08D57]/40 text-[#6B6354] py-3 rounded-sm hover:bg-[#B08D57]/10 transition-all duration-300 text-sm font-medium uppercase tracking-wide"
                   >
                     <FaTimes className="text-sm" />
                     Cancel
@@ -241,9 +320,11 @@ const Profile = () => {
               <div className="space-y-6">
                 <div>
                   <h2 className="font-serif text-2xl font-bold text-[#1F2E24]">
-                    {user.name}
+                    {user.name} {/* ✅ Dynamic Name */}
                   </h2>
-                  <p className="text-[#6B6354] text-sm mt-1">{user.bio}</p>
+                  <p className="text-[#6B6354] text-sm mt-1">
+                    {user.bio || 'Book lover'}
+                  </p>
                 </div>
 
                 {/* Info Grid */}
@@ -268,7 +349,9 @@ const Profile = () => {
                       <p className="text-xs text-[#8A7F68] font-medium uppercase tracking-wide">
                         Phone
                       </p>
-                      <p className="font-medium text-[#1F2E24]">{user.phone}</p>
+                      <p className="font-medium text-[#1F2E24]">
+                        {user.phone || 'Not set'}
+                      </p>
                     </div>
                   </div>
 
@@ -281,7 +364,7 @@ const Profile = () => {
                         Favorite Genre
                       </p>
                       <p className="font-medium text-[#1F2E24]">
-                        {user.favoriteGenre}
+                        {user.favoriteGenre || 'Not set'}
                       </p>
                     </div>
                   </div>
@@ -295,7 +378,7 @@ const Profile = () => {
                         Joined
                       </p>
                       <p className="font-medium text-[#1F2E24] font-mono">
-                        {user.joinDate}
+                        {user.joinDate || 'January 2024'}
                       </p>
                     </div>
                   </div>
@@ -305,7 +388,7 @@ const Profile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#B08D57]/20 border border-[#B08D57]/20">
                   <div className="text-center p-5 bg-[#132018]">
                     <p className="font-serif text-2xl font-bold text-[#D8C9A3]">
-                      {user.totalBooksRead}
+                      {user.totalBooksRead || 0}
                     </p>
                     <p className="text-xs text-white/50 uppercase tracking-wide mt-1">
                       Books Read
