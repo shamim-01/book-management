@@ -1,5 +1,5 @@
 // components/BookCard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BorrowModal from './BorrowModal';
 import ReviewModal from './ReviewModal';
 import {
@@ -12,7 +12,12 @@ import {
   FaHeart,
   FaRegHeart,
   FaSpinner,
+  FaBookReader,
+  FaCheckCircle,
+  FaClock,
 } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import { addHistory, updateHistory, getHistory } from '../services/api';
 
 // Import local images
 import book1 from '../images/book1.jpg';
@@ -56,6 +61,16 @@ const BookCard = ({
   const [showBorrowModal, setShowBorrowModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
+  // ✅ Reading History States
+  const [readingState, setReadingState] = useState({
+    status: null,
+    historyId: null,
+    pagesRead: 0,
+    loading: false,
+  });
+  const [showProgressInput, setShowProgressInput] = useState(false);
+  const [newPages, setNewPages] = useState(0);
+
   if (!book) {
     return null;
   }
@@ -71,6 +86,100 @@ const BookCard = ({
     averageRating,
     coverImage,
   } = book;
+
+  // ✅ Check reading status on mount
+  useEffect(() => {
+    checkReadingStatus();
+  }, [_id]);
+
+  const checkReadingStatus = async () => {
+    try {
+      const response = await getHistory();
+      const history = response.data.history || [];
+      const existing = history.find(h => h.book?._id === _id || h.book === _id);
+
+      if (existing) {
+        setReadingState({
+          status: existing.status,
+          historyId: existing._id,
+          pagesRead: existing.pagesRead || 0,
+          loading: false,
+        });
+      }
+    } catch (error) {
+      console.error('❌ Error checking reading status:', error);
+    }
+  };
+
+  // ✅ Start Reading
+  const handleStartReading = async () => {
+    setReadingState(prev => ({ ...prev, loading: true }));
+    try {
+      const response = await addHistory({
+        bookId: _id,
+        status: 'reading',
+      });
+      setReadingState({
+        status: 'reading',
+        historyId: response.data.history._id,
+        pagesRead: 0,
+        loading: false,
+      });
+      toast.success('Started reading! 📖');
+    } catch (error) {
+      console.error('❌ Start reading error:', error);
+      toast.error(error.response?.data?.message || 'Failed to start reading');
+      setReadingState(prev => ({ ...prev, loading: false }));
+    }
+  };
+
+  // ✅ Update Progress
+  const handleUpdateProgress = async () => {
+    if (!readingState.historyId || newPages <= 0) {
+      toast.error('Please enter valid pages');
+      return;
+    }
+
+    setReadingState(prev => ({ ...prev, loading: true }));
+    try {
+      await updateHistory(readingState.historyId, {
+        pagesRead: readingState.pagesRead + newPages,
+      });
+      setReadingState(prev => ({
+        ...prev,
+        pagesRead: prev.pagesRead + newPages,
+        loading: false,
+      }));
+      setShowProgressInput(false);
+      setNewPages(0);
+      toast.success(`📚 ${newPages} pages added!`);
+    } catch (error) {
+      console.error('❌ Update progress error:', error);
+      toast.error('Failed to update progress');
+      setReadingState(prev => ({ ...prev, loading: false }));
+    }
+  };
+
+  // ✅ Finish Reading
+  const handleFinishReading = async () => {
+    setReadingState(prev => ({ ...prev, loading: true }));
+    try {
+      await updateHistory(readingState.historyId, {
+        status: 'completed',
+        finishedDate: new Date(),
+      });
+      setReadingState(prev => ({
+        ...prev,
+        status: 'completed',
+        loading: false,
+      }));
+      toast.success('🎉 Book finished! Congratulations!');
+    } catch (error) {
+      console.error('❌ Finish reading error:', error);
+      toast.error('Failed to finish book');
+      setReadingState(prev => ({ ...prev, loading: false }));
+    }
+  };
 
   const handleBorrow = async borrowData => {
     console.log('📖 BookCard: Borrowing book:', borrowData);
@@ -120,6 +229,26 @@ const BookCard = ({
     }
   };
 
+  // ✅ Render Reading Status Badge
+  const renderReadingStatus = () => {
+    if (readingState.status === 'completed') {
+      return (
+        <span className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+          <FaCheckCircle className="text-xs" /> Completed
+        </span>
+      );
+    }
+    if (readingState.status === 'reading') {
+      return (
+        <span className="flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+          <FaBookReader className="text-xs" /> Reading ({readingState.pagesRead}{' '}
+          pages)
+        </span>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       <div className="group bg-white/70 rounded-sm border border-[#B08D57]/25 hover:border-[#B08D57]/60 shadow-sm hover:shadow-lg transition-all duration-500 overflow-hidden transform hover:-translate-y-1.5">
@@ -133,10 +262,23 @@ const BookCard = ({
               e.target.src = fallbackImage;
             }}
           />
-          {/* subtle vignette to match ink theme */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#132018]/60 via-transparent to-transparent"></div>
 
-          {/* ✅ Wishlist Button */}
+          {/* ✅ Reading Status Badge on Image */}
+          <div className="absolute top-3 left-3 flex flex-col gap-1">
+            <span
+              className={`px-3 py-1 text-[11px] font-medium uppercase tracking-wide rounded-full backdrop-blur-sm border ${
+                isAvailable
+                  ? 'bg-[#3F6B4F]/80 text-white border-white/20'
+                  : 'bg-[#8A4A3A]/80 text-white border-white/20'
+              }`}
+            >
+              {isAvailable ? 'Available' : 'Borrowed'}
+            </span>
+            {renderReadingStatus()}
+          </div>
+
+          {/* Wishlist Button */}
           <button
             onClick={handleWishlistToggle}
             disabled={isAddingToWishlist}
@@ -151,19 +293,6 @@ const BookCard = ({
               <FaRegHeart className="text-[#6B6354] text-lg hover:text-red-500 transition" />
             )}
           </button>
-
-          {/* Status Badge on Image */}
-          <div className="absolute top-3 left-3">
-            <span
-              className={`px-3 py-1 text-[11px] font-medium uppercase tracking-wide rounded-full backdrop-blur-sm border ${
-                isAvailable
-                  ? 'bg-[#3F6B4F]/80 text-white border-white/20'
-                  : 'bg-[#8A4A3A]/80 text-white border-white/20'
-              }`}
-            >
-              {isAvailable ? 'Available' : 'Borrowed'}
-            </span>
-          </div>
 
           {/* Rating Badge on Image */}
           {averageRating > 0 && (
@@ -216,8 +345,93 @@ const BookCard = ({
             )}
           </div>
 
-          {/* Action Buttons - 5 Columns with Wishlist */}
-          <div className="mt-4 grid grid-cols-5 gap-2">
+          {/* ✅ Reading Action Buttons */}
+          <div className="mt-3">
+            {readingState.status === 'completed' ? (
+              <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-sm p-2">
+                <FaCheckCircle className="text-green-500" />
+                <span className="text-sm text-green-700 font-medium">
+                  ✅ Finished Reading
+                </span>
+              </div>
+            ) : readingState.status === 'reading' ? (
+              <div className="flex flex-wrap items-center gap-2 bg-blue-50 border border-blue-200 rounded-sm p-2">
+                <FaBookReader className="text-blue-500" />
+                <span className="text-sm text-blue-700 font-medium">
+                  📖 Reading: {readingState.pagesRead} pages
+                </span>
+                {!showProgressInput ? (
+                  <>
+                    <button
+                      onClick={() => setShowProgressInput(true)}
+                      className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+                    >
+                      + Add Pages
+                    </button>
+                    <button
+                      onClick={handleFinishReading}
+                      disabled={readingState.loading}
+                      className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition disabled:opacity-50"
+                    >
+                      {readingState.loading ? (
+                        <FaSpinner className="animate-spin" />
+                      ) : (
+                        'Finish'
+                      )}
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-1 w-full mt-1">
+                    <input
+                      type="number"
+                      value={newPages}
+                      onChange={e => setNewPages(parseInt(e.target.value) || 0)}
+                      className="w-20 px-2 py-1 border border-blue-300 rounded text-sm"
+                      placeholder="Pages"
+                      min="1"
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleUpdateProgress}
+                      disabled={readingState.loading}
+                      className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition disabled:opacity-50"
+                    >
+                      {readingState.loading ? (
+                        <FaSpinner className="animate-spin" />
+                      ) : (
+                        'Add'
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowProgressInput(false);
+                        setNewPages(0);
+                      }}
+                      className="text-xs border border-gray-300 px-2 py-1 rounded hover:bg-gray-50 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={handleStartReading}
+                disabled={readingState.loading}
+                className="w-full bg-[#3F6B4F] text-white px-3 py-2 rounded-sm hover:bg-[#345A42] transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {readingState.loading ? (
+                  <FaSpinner className="animate-spin" />
+                ) : (
+                  <FaBookReader className="text-xs" />
+                )}
+                Start Reading
+              </button>
+            )}
+          </div>
+
+          {/* Action Buttons - 5 Columns */}
+          <div className="mt-3 grid grid-cols-5 gap-2">
             {isAvailable ? (
               <button
                 onClick={() => setShowBorrowModal(true)}
@@ -235,7 +449,6 @@ const BookCard = ({
               </button>
             )}
 
-            {/* Review Button */}
             <button
               onClick={() => setShowReviewModal(true)}
               className="col-span-1 bg-[#B08D57] hover:bg-[#C7A56C] text-[#132018] px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
@@ -244,7 +457,6 @@ const BookCard = ({
               <span className="hidden sm:inline">Review</span>
             </button>
 
-            {/* ✅ Wishlist Button (mobile friendly) */}
             <button
               onClick={handleWishlistToggle}
               disabled={isAddingToWishlist}
@@ -261,9 +473,7 @@ const BookCard = ({
               ) : (
                 <FaRegHeart className="text-xs" />
               )}
-              <span className="hidden sm:inline">
-                {isInWishlist ? 'Wishlist' : 'Wishlist'}
-              </span>
+              <span className="hidden sm:inline">Wishlist</span>
             </button>
 
             <button
@@ -289,7 +499,7 @@ const BookCard = ({
             </button>
           </div>
 
-          {/* Mobile: Show button labels in a row */}
+          {/* Mobile: Show button labels */}
           <div className="flex flex-wrap gap-1 mt-2 sm:hidden">
             <span className="text-[10px] text-[#8A7F68] bg-[#F7F3E9] px-2 py-0.5 rounded">
               Borrow
