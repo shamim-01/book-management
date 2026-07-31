@@ -8,10 +8,10 @@ const {
 } = require('../controllers/reviewController');
 const { protect } = require('../middleware/auth');
 
-// ✅ Public routes
+//  Public routes
 router.get('/:bookId', getReviews);
 
-// ✅ Protected routes
+//  Protected routes
 router.post('/:bookId', protect, addReview);
 router.put('/:id', protect, updateReview);
 router.delete('/:id', protect, deleteReview);

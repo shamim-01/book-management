@@ -30,7 +30,7 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
-// ✅ Prevent duplicate reviews (one user can review a book only once)
+//  Prevent duplicate reviews (one user can review a book only once)
 reviewSchema.index({ book: 1, user: 1 }, { unique: true });
 
 module.exports = mongoose.model('Review', reviewSchema);

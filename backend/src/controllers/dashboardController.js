@@ -69,7 +69,7 @@ exports.getStats = async (req, res) => {
     const recentBooks = await Book.find().sort({ createdAt: -1 }).limit(5);
     console.log('📚 Recent Books:', recentBooks.map(b => b.title).join(', '));
 
-    // ✅ Send Response with both counts for debugging
+    // Send Response with both counts for debugging
     res.status(200).json({
       success: true,
       data: {

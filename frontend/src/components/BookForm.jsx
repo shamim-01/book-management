@@ -64,32 +64,38 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6">
-        {initialData ? '✏️ Edit Book' : '📚 Add New Book'}
+    <div className="bg-white border border-[#B08D57]/25 rounded-sm shadow-lg p-6">
+      <h2 className="font-serif text-2xl font-bold text-[#1F2E24] mb-6 border-b border-[#B08D57]/30 pb-4">
+        {initialData ? 'Edit Book' : 'Add New Book'}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Title *</label>
+            <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+              Title *
+            </label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-600"
+              className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                       focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Author *</label>
+            <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+              Author *
+            </label>
             <input
               type="text"
               name="author"
               value={formData.author}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-600"
+              className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                       focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
               required
             />
           </div>
@@ -97,12 +103,15 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Genre</label>
+            <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+              Genre
+            </label>
             <select
               name="genre"
               value={formData.genre}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2"
+              className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                       focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
             >
               <option value="Fiction">Fiction</option>
               <option value="Non-Fiction">Non-Fiction</option>
@@ -113,13 +122,16 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Year</label>
+            <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+              Year
+            </label>
             <input
               type="number"
               name="publishedYear"
               value={formData.publishedYear}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2"
+              className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                       focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
               placeholder="2024"
             />
           </div>
@@ -127,13 +139,16 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Price ($)</label>
+            <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+              Price ($)
+            </label>
             <input
               type="number"
               name="price"
               value={formData.price}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2"
+              className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                       focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
               placeholder="0.00"
               step="0.01"
             />
@@ -144,27 +159,31 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
               name="isAvailable"
               checked={formData.isAvailable}
               onChange={handleChange}
-              className="h-4 w-4 text-emerald-600"
+              className="h-4 w-4 accent-[#3F6B4F]"
             />
-            <label className="ml-2 text-sm">Available</label>
+            <label className="ml-2 text-sm text-[#5B5347]">Available</label>
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
+          <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-1.5">
+            Description
+          </label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows="2"
-            className="w-full border rounded-lg p-2"
+            className="w-full border border-[#B08D57]/30 rounded-sm p-2.5 bg-[#F7F3E9]/40
+                     focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F] outline-none transition"
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-2">
           <button
             type="submit"
-            className="flex-1 bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700"
+            className="flex-1 bg-[#B08D57] text-[#132018] py-2.5 rounded-sm font-semibold
+                     tracking-wide hover:bg-[#C7A56C] transition"
           >
             {initialData ? 'Update Book' : 'Add Book'}
           </button>
@@ -172,7 +191,8 @@ const BookForm = ({ initialData, onSubmit, onCancel }) => {
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 bg-gray-300 py-2 rounded-lg hover:bg-gray-400"
+              className="flex-1 bg-transparent border border-[#B08D57]/40 text-[#5B5347] py-2.5
+                       rounded-sm font-semibold tracking-wide hover:bg-[#B08D57]/10 transition"
             >
               Cancel
             </button>

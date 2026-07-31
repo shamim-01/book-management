@@ -74,33 +74,34 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f5f0eb] flex flex-col items-center justify-center">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-emerald-700"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <FaChartPie className="text-emerald-700 text-2xl" />
-          </div>
+      <div className="flex flex-col items-center justify-center min-h-[70vh] bg-[#F7F3E9]">
+        <div className="relative h-16 w-16">
+          <div className="absolute inset-0 rounded-full border-2 border-[#3F6B4F]/20"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#3F6B4F] animate-spin"></div>
+          <FaChartPie className="absolute inset-0 m-auto text-[#3F6B4F] text-lg" />
         </div>
-        <p className="text-gray-500 mt-6 font-medium">Loading dashboard...</p>
+        <p className="text-[#5B5347] mt-4 tracking-wide text-sm uppercase">
+          Reading the ledger…
+        </p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#f5f0eb] flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full border border-red-100">
+      <div className="min-h-screen bg-[#F7F3E9] flex items-center justify-center p-4">
+        <div className="bg-white rounded-sm shadow-xl p-8 max-w-md w-full border border-[#B08D57]/25">
           <div className="text-center">
-            <div className="text-6xl mb-4">❌</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">
+            <FaExclamationCircle className="text-3xl text-[#8A6A2E] mx-auto mb-4" />
+            <h3 className="font-serif text-xl font-bold text-[#1F2E24] mb-2">
               Error Loading Dashboard
             </h3>
-            <p className="text-gray-500 text-sm mb-6">{error}</p>
+            <p className="text-[#8A7F68] text-sm mb-6">{error}</p>
             <button
               onClick={fetchStats}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 
-                       text-white px-6 py-2.5 rounded-xl hover:from-red-600 hover:to-red-700 
-                       transition-all duration-300 font-medium shadow-md hover:shadow-lg"
+              className="inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
+                       px-6 py-2.5 rounded-sm hover:bg-[#C7A56C]
+                       transition-all duration-300 font-semibold tracking-wide"
             >
               <FaSyncAlt className={loading ? 'animate-spin' : ''} />
               Retry
@@ -112,41 +113,46 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f0eb]">
+    <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* ===== HEADER ===== */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-900 rounded-2xl shadow-2xl mb-8">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400 rounded-full blur-3xl"></div>
+        <div className="relative overflow-hidden bg-[#132018] rounded-sm shadow-2xl mb-8">
+          <div className="absolute inset-0 flex opacity-[0.08]">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 border-r border-[#B08D57]"
+                style={{
+                  backgroundColor: i % 3 === 0 ? '#B08D57' : 'transparent',
+                }}
+              />
+            ))}
           </div>
+          <div className="absolute -top-24 -right-24 w-[24rem] h-[24rem] bg-[#3F6B4F]/20 rounded-full blur-3xl"></div>
 
           <div className="relative px-6 sm:px-8 lg:px-10 py-8 sm:py-10 lg:py-12">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <div className="flex items-center gap-3">
-                  <span className="text-4xl sm:text-5xl">📊</span>
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
-                      Dashboard
-                    </h1>
-                    <p className="text-emerald-200 text-sm sm:text-base mt-0.5">
-                      Your library at a glance
-                    </p>
-                  </div>
+                <div className="inline-flex items-center gap-2 border border-[#B08D57]/40 px-4 py-1.5 rounded-full text-xs tracking-[0.2em] uppercase text-[#D8C9A3] mb-4">
+                  <FaChartPie className="text-[#B08D57]" />
+                  Dashboard
                 </div>
+                <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                  Your library,{' '}
+                  <span className="italic text-[#D8C9A3]">at a glance</span>
+                </h1>
 
-                <div className="flex flex-wrap items-center gap-3 mt-3">
-                  <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-white">
-                    <FaBook className="text-emerald-300" />
+                <div className="flex flex-wrap items-center gap-3 mt-5">
+                  <span className="inline-flex items-center gap-1.5 border border-[#B08D57]/40 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-white/80">
+                    <FaBook className="text-[#B08D57]" />
                     {stats.totalBooks} total books
                   </span>
-                  <span className="inline-flex items-center gap-1.5 bg-emerald-400/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-emerald-100">
-                    <span className="text-emerald-300">●</span>
+                  <span className="inline-flex items-center gap-1.5 border border-[#8FBF9F]/30 bg-[#8FBF9F]/10 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#8FBF9F]">
+                    <span className="text-[#8FBF9F]">●</span>
                     {stats.availableBooks} available
                   </span>
-                  <span className="inline-flex items-center gap-1.5 bg-amber-400/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-amber-100">
-                    <FaClock className="text-amber-300" />
+                  <span className="inline-flex items-center gap-1.5 border border-[#D9A566]/30 bg-[#D9A566]/10 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#D9A566]">
+                    <FaClock className="text-[#D9A566]" />
                     {stats.activeBorrows} active borrows
                   </span>
                 </div>
@@ -154,9 +160,9 @@ const Dashboard = () => {
 
               <button
                 onClick={fetchStats}
-                className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 
-                         text-white px-5 sm:px-6 py-2.5 rounded-xl transition-all duration-300 
-                         font-medium border border-white/20 hover:scale-105 text-sm sm:text-base"
+                className="inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
+                         px-5 sm:px-6 py-2.5 rounded-sm hover:bg-[#C7A56C]
+                         transition-all duration-300 font-semibold tracking-wide text-sm sm:text-base"
               >
                 <FaSyncAlt className={loading ? 'animate-spin' : ''} />
                 Refresh
@@ -166,127 +172,103 @@ const Dashboard = () => {
         </div>
 
         {/* ===== STATS CARDS ===== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-5 border border-gray-100/80 hover:border-emerald-200 group">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500 font-medium">Total Books</p>
-                <p className="text-3xl font-bold text-gray-800 group-hover:text-emerald-700 transition">
-                  {stats.totalBooks}
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-3.5 rounded-xl group-hover:scale-110 transition">
-                <FaBook className="text-emerald-700 text-xl" />
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#B08D57]/25 border border-[#B08D57]/25 mb-8">
+          {[
+            {
+              label: 'Total Books',
+              value: stats.totalBooks,
+              sub: 'In your library',
+              icon: FaBook,
+              no: '01',
+            },
+            {
+              label: 'Available',
+              value: stats.availableBooks,
+              sub: 'Ready to borrow',
+              icon: FaBookOpen,
+              no: '02',
+            },
+            {
+              label: 'Borrowed',
+              value: borrowedBooks,
+              sub: 'Currently out',
+              icon: FaClock,
+              no: '03',
+            },
+            {
+              label: 'Total Borrows',
+              value: stats.totalBorrows,
+              sub: 'All time',
+              icon: FaSyncAlt,
+              no: '04',
+            },
+          ].map(card => (
+            <div
+              key={card.label}
+              className="relative bg-white p-6 hover:bg-[#F7F3E9] transition-colors duration-300 group"
+            >
+              <span className="absolute top-3 right-3 font-mono text-[10px] text-[#8A7F68] tracking-widest">
+                NO.{card.no}
+              </span>
+              <card.icon className="text-2xl text-[#3F6B4F] mb-3 group-hover:scale-110 transition-transform" />
+              <p className="text-3xl font-serif font-bold text-[#1F2E24]">
+                {card.value}
+              </p>
+              <p className="text-xs text-[#8A7F68] mt-1 uppercase tracking-wide">
+                {card.label}
+              </p>
+              <p className="text-xs text-[#B08D57] mt-2">{card.sub}</p>
             </div>
-            <div className="mt-2 flex items-center gap-1 text-xs text-gray-400">
-              <span>📚 In your library</span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-5 border border-gray-100/80 hover:border-teal-200 group">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500 font-medium">Available</p>
-                <p className="text-3xl font-bold text-emerald-700 group-hover:scale-105 transition">
-                  {stats.availableBooks}
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-3.5 rounded-xl group-hover:scale-110 transition">
-                <FaBookOpen className="text-teal-700 text-xl" />
-              </div>
-            </div>
-            <div className="mt-2 flex items-center gap-1 text-xs text-emerald-600">
-              <FaCheckCircle className="text-emerald-500" />
-              <span>Ready to borrow</span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-5 border border-gray-100/80 hover:border-amber-200 group">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500 font-medium">Borrowed</p>
-                <p className="text-3xl font-bold text-amber-600 group-hover:scale-105 transition">
-                  {borrowedBooks}
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-3.5 rounded-xl group-hover:scale-110 transition">
-                <FaClock className="text-amber-600 text-xl" />
-              </div>
-            </div>
-            <div className="mt-2 flex items-center gap-1 text-xs text-amber-600">
-              <FaExclamationCircle className="text-amber-500" />
-              <span>Currently out</span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-5 border border-gray-100/80 hover:border-slate-200 group">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500 font-medium">
-                  Total Borrows
-                </p>
-                <p className="text-3xl font-bold text-slate-700 group-hover:scale-105 transition">
-                  {stats.totalBorrows}
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-3.5 rounded-xl group-hover:scale-110 transition">
-                <FaSyncAlt className="text-slate-600 text-xl" />
-              </div>
-            </div>
-            <div className="mt-2 flex items-center gap-1 text-xs text-slate-500">
-              <span>🔄 All time</span>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* ===== RECENT BOOKS ===== */}
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 mb-8 border border-gray-100/80">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <FaBook className="text-emerald-600" />
+        <div className="bg-white border border-[#B08D57]/20 p-6 mb-8">
+          <div className="flex items-center justify-between mb-6 border-b border-[#B08D57]/30 pb-4">
+            <h2 className="font-serif text-2xl font-bold text-[#1F2E24] flex items-center gap-2">
+              <FaBook className="text-[#3F6B4F] text-lg" />
               Recently Added
             </h2>
             <Link
               to="/books"
-              className="text-sm text-emerald-700 hover:text-emerald-900 font-medium transition flex items-center gap-1"
+              className="text-[#3F6B4F] hover:text-[#1F2E24] font-medium flex items-center gap-1 text-sm uppercase tracking-wide"
             >
               View All →
             </Link>
           </div>
 
           {!stats.recentBooks || stats.recentBooks.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400">No books added yet.</p>
+            <div className="text-center py-14 bg-[#F7F3E9]/60 border border-dashed border-[#B08D57]/40 rounded-sm">
+              <p className="text-[#8A7F68]">No books added yet</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {stats.recentBooks.slice(0, 6).map((book, index) => (
                 <div
                   key={book._id}
-                  className="group border border-gray-100 p-4 rounded-xl hover:shadow-md transition-all duration-300 hover:border-emerald-200 hover:-translate-y-0.5"
+                  className="group border border-[#B08D57]/20 p-4 hover:bg-[#F7F3E9]/60 transition-all duration-300"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-sm font-medium text-gray-400 w-5">
-                      #{index + 1}
+                    <span className="font-mono text-xs text-[#B08D57] w-6">
+                      {String(index + 1).padStart(2, '0')}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-800 truncate group-hover:text-emerald-700 transition">
+                      <h3 className="font-serif font-semibold text-[#1F2E24] truncate group-hover:text-[#3F6B4F] transition">
                         {book.title}
                       </h3>
-                      <p className="text-sm text-gray-500">by {book.author}</p>
+                      <p className="text-sm text-[#8A7F68]">by {book.author}</p>
                       <div className="flex items-center gap-3 mt-2">
                         <span
-                          className={`text-xs px-2.5 py-1 rounded-full ${
+                          className={`text-[11px] px-3 py-1 rounded-full uppercase tracking-wide font-medium ${
                             book.isAvailable
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                              ? 'bg-[#3F6B4F]/10 text-[#3F6B4F]'
+                              : 'bg-[#B08D57]/15 text-[#8A6A2E]'
                           }`}
                         >
-                          {book.isAvailable ? '✅ Available' : '📖 Borrowed'}
+                          {book.isAvailable ? 'Available' : 'Borrowed'}
                         </span>
                         {book.price > 0 && (
-                          <span className="text-sm font-semibold text-gray-700">
+                          <span className="text-sm font-semibold text-[#1F2E24]">
                             ${book.price}
                           </span>
                         )}
@@ -301,23 +283,14 @@ const Dashboard = () => {
 
         {/* ===== GENRE DISTRIBUTION ===== */}
         {stats.genreStats && stats.genreStats.length > 0 && (
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100/80">
-            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-              <FaChartPie className="text-emerald-600" />
+          <div className="bg-white border border-[#B08D57]/20 p-6">
+            <h2 className="font-serif text-2xl font-bold text-[#1F2E24] flex items-center gap-2 mb-6 border-b border-[#B08D57]/30 pb-4">
+              <FaChartPie className="text-[#3F6B4F] text-lg" />
               Genre Distribution
             </h2>
 
             <div className="flex flex-wrap gap-3">
               {stats.genreStats.map((genre, index) => {
-                const colors = [
-                  'bg-emerald-100 text-emerald-700 border-emerald-200',
-                  'bg-teal-100 text-teal-700 border-teal-200',
-                  'bg-amber-100 text-amber-700 border-amber-200',
-                  'bg-green-100 text-green-700 border-green-200',
-                  'bg-slate-100 text-slate-700 border-slate-200',
-                  'bg-cyan-100 text-cyan-700 border-cyan-200',
-                ];
-                const colorClass = colors[index % colors.length];
                 const percentage = (
                   (genre.count / stats.totalBooks) *
                   100
@@ -326,13 +299,15 @@ const Dashboard = () => {
                 return (
                   <div
                     key={genre._id}
-                    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium border ${colorClass}`}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium border border-[#B08D57]/30 bg-[#F7F3E9] text-[#1F2E24]"
                   >
                     <span>{genre._id || 'Other'}</span>
-                    <span className="bg-white/50 px-2 py-0.5 rounded-full text-xs font-bold">
+                    <span className="bg-[#3F6B4F]/10 text-[#3F6B4F] px-2 py-0.5 rounded-full text-xs font-bold">
                       {genre.count}
                     </span>
-                    <span className="text-xs opacity-70">({percentage}%)</span>
+                    <span className="text-xs text-[#8A7F68]">
+                      ({percentage}%)
+                    </span>
                   </div>
                 );
               })}
@@ -344,9 +319,9 @@ const Dashboard = () => {
         <div className="mt-8 flex justify-end">
           <button
             onClick={scrollToTop}
-            className="group w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 
-                     hover:bg-emerald-700 hover:text-white transition-all duration-300 
-                     flex items-center justify-center shadow-sm hover:shadow-md 
+            className="group w-10 h-10 rounded-full bg-[#3F6B4F]/10 text-[#3F6B4F]
+                     hover:bg-[#3F6B4F] hover:text-white transition-all duration-300
+                     flex items-center justify-center shadow-sm hover:shadow-md
                      hover:scale-110"
             aria-label="Back to top"
           >

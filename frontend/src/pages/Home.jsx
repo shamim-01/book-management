@@ -74,291 +74,307 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh]">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-700"></div>
-        <p className="text-gray-500 mt-4">Loading your library...</p>
+      <div className="flex flex-col items-center justify-center min-h-[70vh] bg-[#F7F3E9]">
+        <div className="relative h-16 w-16">
+          <div className="absolute inset-0 rounded-full border-2 border-[#3F6B4F]/20"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#3F6B4F] animate-spin"></div>
+          <FaBook className="absolute inset-0 m-auto text-[#3F6B4F] text-lg" />
+        </div>
+        <p className="text-[#5B5347] mt-4 tracking-wide text-sm uppercase">
+          Opening the stacks…
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50/20">
+    <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24]">
       {/* ===== HERO SECTION ===== */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-900">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
+      <section className="relative overflow-hidden bg-[#132018]">
+        {/* Book-spine texture bars */}
+        <div className="absolute inset-0 flex opacity-[0.08]">
+          {Array.from({ length: 24 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 border-r border-[#B08D57]"
+              style={{
+                backgroundColor: i % 3 === 0 ? '#B08D57' : 'transparent',
+              }}
+            />
+          ))}
         </div>
+        <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] bg-[#3F6B4F]/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-32 -left-24 w-[24rem] h-[24rem] bg-[#B08D57]/10 rounded-full blur-3xl"></div>
 
         <div className="relative container mx-auto px-4 py-20 md:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             {/* Left Content */}
-            <div className="text-white space-y-6">
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            <div className="text-white space-y-7">
+              <div className="inline-flex items-center gap-2 border border-[#B08D57]/40 px-4 py-1.5 rounded-full text-xs tracking-[0.2em] uppercase text-[#D8C9A3]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B08D57] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#B08D57]"></span>
                 </span>
-                <span className="text-emerald-300">System Online</span>
-                <span className="text-white/40">•</span>
-                <span className="text-white/60">v2.0.0</span>
+                Reading Room Open · v2.0.0
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-emerald-300 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
-                  Smart Library
-                </span>
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight">
+                <span className="text-white">The library,</span>
                 <br />
-                <span className="text-white">Management System</span>
+                <span className="italic text-[#D8C9A3]">catalogued</span>
+                <span className="text-white"> and current.</span>
               </h1>
 
-              <p className="text-lg text-white/70 max-w-lg leading-relaxed">
-                Effortlessly manage your book collection, track borrows, and
-                organize your library with our powerful and intuitive platform.
+              <p className="text-base md:text-lg text-white/60 max-w-md leading-relaxed border-l-2 border-[#B08D57]/50 pl-4">
+                Track every title, every loan, every return — one shelf at a
+                time. Built for collections that keep growing.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap items-center gap-5 pt-2">
                 <Link
                   to="/books"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 
-                           text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-teal-700 
-                           transition-all duration-300 shadow-lg hover:shadow-2xl font-medium"
+                  className="group inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
+                           px-6 py-3 rounded-sm hover:bg-[#C7A56C]
+                           transition-all duration-300 font-semibold tracking-wide"
                 >
-                  Get Started <FaRocket className="text-sm" />
+                  Enter the Catalog
+                  <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm 
-                           text-white px-6 py-3 rounded-xl hover:bg-white/20 
-                           transition-all duration-300 font-medium border border-white/10"
+                  className="inline-flex items-center gap-2 text-white/70 hover:text-white
+                           transition-all duration-300 font-medium border-b border-white/20 hover:border-[#B08D57] pb-0.5"
                 >
-                  Learn More <FaChevronRight className="text-sm" />
+                  Learn More <FaChevronRight className="text-xs" />
                 </Link>
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex items-center gap-6 pt-4">
-                <div className="flex items-center gap-2 text-white/60">
-                  <FaShieldAlt className="text-emerald-400" />
-                  <span className="text-sm">Secure</span>
+              <div className="flex items-center gap-6 pt-6 text-white/50">
+                <div className="flex items-center gap-2">
+                  <FaShieldAlt className="text-[#B08D57]" />
+                  <span className="text-xs uppercase tracking-wider">
+                    Secure
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-white/60">
-                  <FaHeadset className="text-teal-400" />
-                  <span className="text-sm">24/7 Support</span>
+                <div className="flex items-center gap-2">
+                  <FaHeadset className="text-[#B08D57]" />
+                  <span className="text-xs uppercase tracking-wider">
+                    24/7 Support
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-white/60">
-                  <FaChartLine className="text-emerald-300" />
-                  <span className="text-sm">Analytics</span>
+                <div className="flex items-center gap-2">
+                  <FaChartLine className="text-[#B08D57]" />
+                  <span className="text-xs uppercase tracking-wider">
+                    Analytics
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Right Content - Stats Cards */}
+            {/* Right Content - Catalog-card Stats */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition">
-                <div className="flex items-center gap-3 text-emerald-300 mb-2">
-                  <FaBook className="text-2xl" />
-                  <span className="text-sm font-medium">Total Books</span>
+              {[
+                {
+                  label: 'Total Books',
+                  value: stats.totalBooks,
+                  sub: 'In your library',
+                  icon: FaBook,
+                  no: '01',
+                },
+                {
+                  label: 'Available',
+                  value: stats.availableBooks,
+                  sub: 'Ready to borrow',
+                  icon: FaBookOpen,
+                  no: '02',
+                },
+                {
+                  label: 'Borrowed',
+                  value: stats.borrowedBooks,
+                  sub: 'Currently out',
+                  icon: FaClock,
+                  no: '03',
+                },
+                {
+                  label: 'Total Borrows',
+                  value: stats.totalBorrows,
+                  sub: 'All time',
+                  icon: FaUsers,
+                  no: '04',
+                },
+              ].map(card => (
+                <div
+                  key={card.label}
+                  className="relative bg-[#F7F3E9]/95 rounded-sm p-6 shadow-xl hover:-translate-y-1 transition-transform duration-300"
+                >
+                  <span className="absolute top-3 right-3 font-mono text-[10px] text-[#8A7F68] tracking-widest">
+                    NO.{card.no}
+                  </span>
+                  <card.icon className="text-2xl text-[#3F6B4F] mb-3" />
+                  <p className="text-3xl font-serif font-bold text-[#1F2E24]">
+                    {card.value}
+                  </p>
+                  <p className="text-xs text-[#8A7F68] mt-1 uppercase tracking-wide">
+                    {card.sub}
+                  </p>
+                  <div className="absolute left-6 right-6 bottom-0 h-px bg-[#B08D57]/30"></div>
                 </div>
-                <p className="text-3xl font-bold text-white">
-                  {stats.totalBooks}
-                </p>
-                <p className="text-xs text-white/40 mt-1">In your library</p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition">
-                <div className="flex items-center gap-3 text-teal-300 mb-2">
-                  <FaBookOpen className="text-2xl" />
-                  <span className="text-sm font-medium">Available</span>
-                </div>
-                <p className="text-3xl font-bold text-white">
-                  {stats.availableBooks}
-                </p>
-                <p className="text-xs text-white/40 mt-1">Ready to borrow</p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition">
-                <div className="flex items-center gap-3 text-amber-300 mb-2">
-                  <FaClock className="text-2xl" />
-                  <span className="text-sm font-medium">Borrowed</span>
-                </div>
-                <p className="text-3xl font-bold text-white">
-                  {stats.borrowedBooks}
-                </p>
-                <p className="text-xs text-white/40 mt-1">Currently out</p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition">
-                <div className="flex items-center gap-3 text-emerald-200 mb-2">
-                  <FaUsers className="text-2xl" />
-                  <span className="text-sm font-medium">Total Borrows</span>
-                </div>
-                <p className="text-3xl font-bold text-white">
-                  {stats.totalBorrows}
-                </p>
-                <p className="text-xs text-white/40 mt-1">All time</p>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-
-        {/* Bottom Curve */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full" fill="white">
-            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z"></path>
-          </svg>
         </div>
       </section>
 
       {/* ===== FEATURES SECTION ===== */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-[#F7F3E9]">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-emerald-700 text-sm font-semibold uppercase tracking-wider">
-              Features
+          <div className="text-center mb-14">
+            <span className="text-[#3F6B4F] text-xs font-semibold uppercase tracking-[0.25em]">
+              What's Inside
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mt-2">
-              Everything You Need to{' '}
-              <span className="text-emerald-700">Manage Your Library</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#1F2E24] mt-3">
+              Three shelves, one system
             </h2>
-            <p className="text-gray-500 mt-2 max-w-2xl mx-auto">
-              Powerful tools to organize, track, and manage your book collection
-              efficiently
+            <p className="text-[#6B6354] mt-3 max-w-xl mx-auto">
+              Everything a librarian actually reaches for, without the extra
+              clutter.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-emerald-200 hover:-translate-y-2">
-              <div className="w-14 h-14 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-4 group-hover:scale-110 transition">
-                <FaBook />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#B08D57]/25 rounded-sm overflow-hidden border border-[#B08D57]/25">
+            {[
+              {
+                icon: FaBook,
+                title: 'Book Management',
+                copy: "Add, edit, and organize your entire collection. Every title's details and availability, always in view.",
+              },
+              {
+                icon: FaBookOpen,
+                title: 'Borrow & Return',
+                copy: 'A simple loan system with due-date tracking, so nothing quietly disappears off the shelf.',
+              },
+              {
+                icon: FaChartLine,
+                title: 'Analytics Dashboard',
+                copy: 'Read the shape of your collection at a glance — genres, trends, and turnover, made visible.',
+              },
+            ].map(f => (
+              <div
+                key={f.title}
+                className="group bg-[#F7F3E9] p-8 hover:bg-white transition-colors duration-300"
+              >
+                <div className="w-12 h-12 border border-[#3F6B4F] rounded-full flex items-center justify-center text-lg text-[#3F6B4F] mb-5 group-hover:bg-[#3F6B4F] group-hover:text-[#F7F3E9] transition-colors duration-300">
+                  <f.icon />
+                </div>
+                <h3 className="font-serif text-xl font-bold text-[#1F2E24] mb-2">
+                  {f.title}
+                </h3>
+                <p className="text-[#6B6354] text-sm leading-relaxed">
+                  {f.copy}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Book Management
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Add, edit, and organize your entire book collection with ease.
-                Keep track of every book's details and availability.
-              </p>
-            </div>
-
-            <div className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-teal-200 hover:-translate-y-2">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-600 to-emerald-500 rounded-2xl flex items-center justify-center text-2xl text-white mb-4 group-hover:scale-110 transition">
-                <FaBookOpen />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Borrow & Return
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Simple borrow and return system with due date tracking. Never
-                lose track of borrowed books again.
-              </p>
-            </div>
-
-            <div className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-emerald-200 hover:-translate-y-2">
-              <div className="w-14 h-14 bg-gradient-to-br from-emerald-700 to-emerald-500 rounded-2xl flex items-center justify-center text-2xl text-white mb-4 group-hover:scale-110 transition">
-                <FaChartLine />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Analytics Dashboard
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Get insights into your library with beautiful charts and
-                statistics. Track trends and make informed decisions.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ===== QUICK STATS SECTION ===== */}
-      <section className="py-16 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      <section className="py-16 bg-[#132018]">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition text-center">
-              <div className="text-4xl mb-2">📚</div>
-              <p className="text-3xl font-bold text-gray-800">
-                {stats.totalBooks}
-              </p>
-              <p className="text-gray-500 text-sm">Total Books</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition text-center">
-              <div className="text-4xl mb-2">✅</div>
-              <p className="text-3xl font-bold text-emerald-700">
-                {stats.availableBooks}
-              </p>
-              <p className="text-gray-500 text-sm">Available</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition text-center">
-              <div className="text-4xl mb-2">📖</div>
-              <p className="text-3xl font-bold text-amber-600">
-                {stats.borrowedBooks}
-              </p>
-              <p className="text-gray-500 text-sm">Borrowed</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition text-center">
-              <div className="text-4xl mb-2">🔄</div>
-              <p className="text-3xl font-bold text-teal-700">
-                {stats.totalBorrows}
-              </p>
-              <p className="text-gray-500 text-sm">Total Borrows</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#B08D57]/20 border border-[#B08D57]/20">
+            {[
+              {
+                label: 'Total Books',
+                value: stats.totalBooks,
+                color: '#D8C9A3',
+              },
+              {
+                label: 'Available',
+                value: stats.availableBooks,
+                color: '#8FBF9F',
+              },
+              {
+                label: 'Borrowed',
+                value: stats.borrowedBooks,
+                color: '#D9A566',
+              },
+              {
+                label: 'Total Borrows',
+                value: stats.totalBorrows,
+                color: '#9FC3D8',
+              },
+            ].map(s => (
+              <div
+                key={s.label}
+                className="bg-[#132018] p-8 text-center hover:bg-[#1A2A20] transition-colors"
+              >
+                <p
+                  className="text-4xl font-serif font-bold"
+                  style={{ color: s.color }}
+                >
+                  {s.value}
+                </p>
+                <p className="text-white/50 text-xs uppercase tracking-[0.2em] mt-2">
+                  {s.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ===== RECENT BOOKS & GENRES ===== */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-[#F7F3E9]">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             {/* Recent Books */}
             <div className="lg:col-span-2">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                  <FaClock className="text-emerald-600" />
+              <div className="flex items-center justify-between mb-6 border-b border-[#B08D57]/30 pb-4">
+                <h3 className="font-serif text-2xl font-bold text-[#1F2E24] flex items-center gap-2">
+                  <FaClock className="text-[#3F6B4F] text-lg" />
                   Recently Added
                 </h3>
                 <Link
                   to="/books"
-                  className="text-emerald-700 hover:text-emerald-900 font-medium flex items-center gap-1"
+                  className="text-[#3F6B4F] hover:text-[#1F2E24] font-medium flex items-center gap-1 text-sm uppercase tracking-wide"
                 >
-                  View All <FaChevronRight className="text-sm" />
+                  View All <FaChevronRight className="text-xs" />
                 </Link>
               </div>
 
               {stats.recentBooks.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-2xl">
-                  <p className="text-gray-500">No books added yet</p>
+                <div className="text-center py-14 bg-white/60 border border-dashed border-[#B08D57]/40 rounded-sm">
+                  <p className="text-[#8A7F68]">No books added yet</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="divide-y divide-[#B08D57]/20 border border-[#B08D57]/20 bg-white/50">
                   {stats.recentBooks.map((book, index) => (
                     <div
                       key={book._id}
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition group"
+                      className="flex items-center justify-between px-5 py-4 hover:bg-white transition group"
                     >
                       <div className="flex items-center gap-4">
-                        <span className="text-sm font-medium text-gray-400 w-6">
-                          #{index + 1}
+                        <span className="font-mono text-xs text-[#B08D57] w-6">
+                          {String(index + 1).padStart(2, '0')}
                         </span>
                         <div>
-                          <p className="font-medium text-gray-800 group-hover:text-emerald-700 transition">
+                          <p className="font-serif font-semibold text-[#1F2E24] group-hover:text-[#3F6B4F] transition">
                             {book.title}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-[#8A7F68]">
                             by {book.author}
                           </p>
                         </div>
                       </div>
                       <span
-                        className={`text-xs px-3 py-1.5 rounded-full ${
+                        className={`text-[11px] px-3 py-1 rounded-full uppercase tracking-wide font-medium ${
                           book.isAvailable
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-amber-100 text-amber-700'
+                            ? 'bg-[#3F6B4F]/10 text-[#3F6B4F]'
+                            : 'bg-[#B08D57]/15 text-[#8A6A2E]'
                         }`}
                       >
-                        {book.isAvailable ? '✅ Available' : '📖 Borrowed'}
+                        {book.isAvailable ? 'Available' : 'Borrowed'}
                       </span>
                     </div>
                   ))}
@@ -368,33 +384,32 @@ const Home = () => {
 
             {/* Popular Genres */}
             <div>
-              <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                <FaStar className="text-amber-500" />
-                Popular Genres
-              </h3>
+              <div className="flex items-center gap-2 mb-6 border-b border-[#B08D57]/30 pb-4">
+                <FaStar className="text-[#B08D57] text-lg" />
+                <h3 className="font-serif text-2xl font-bold text-[#1F2E24]">
+                  Popular Genres
+                </h3>
+              </div>
 
               {stats.popularGenres.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-2xl">
-                  <p className="text-gray-500">No genres yet</p>
+                <div className="text-center py-14 bg-white/60 border border-dashed border-[#B08D57]/40 rounded-sm">
+                  <p className="text-[#8A7F68]">No genres yet</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {stats.popularGenres.map(item => (
-                    <div
-                      key={item.genre}
-                      className="bg-gray-50 rounded-xl p-4 hover:shadow-md transition"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-gray-700">
+                    <div key={item.genre}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-medium text-[#2A2A24] text-sm">
                           {item.genre}
                         </span>
-                        <span className="text-sm font-semibold text-emerald-700">
-                          {item.count} books
+                        <span className="font-mono text-xs text-[#3F6B4F]">
+                          {item.count}
                         </span>
                       </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-[#B08D57]/15 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-emerald-600 to-teal-500 rounded-full transition-all duration-1000"
+                          className="h-full bg-[#3F6B4F] rounded-full transition-all duration-1000"
                           style={{
                             width: `${(item.count / stats.totalBooks) * 100}%`,
                           }}
@@ -410,29 +425,37 @@ const Home = () => {
       </section>
 
       {/* ===== CTA SECTION ===== */}
-      <section className="py-16 bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to{' '}
-              <span className="bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
-                Organize
-              </span>{' '}
-              Your Library?
+      <section className="py-20 bg-[#132018] relative overflow-hidden">
+        <div className="absolute inset-0 flex opacity-[0.06]">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 border-r border-[#B08D57]"
+              style={{
+                backgroundColor: i % 4 === 0 ? '#B08D57' : 'transparent',
+              }}
+            />
+          ))}
+        </div>
+        <div className="relative container mx-auto px-4 text-center">
+          <div className="max-w-2xl mx-auto">
+            <span className="text-[#B08D57] text-xs uppercase tracking-[0.25em]">
+              Next Chapter
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mt-3 mb-4">
+              Ready to organize your library?
             </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Start managing your book collection today. Add your first book and
-              experience the difference.
+            <p className="text-white/60 text-lg mb-9">
+              Add your first book and see the shelf come into focus.
             </p>
 
-            {/* ✅ Fixed: Add Your First Book - Books Page এ যাবে */}
             <Link
               to="/books"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 
-                       text-white px-8 py-3.5 rounded-xl hover:from-emerald-600 hover:to-teal-700 
-                       transition-all duration-300 shadow-lg hover:shadow-2xl text-lg font-medium"
+              className="inline-flex items-center gap-2 bg-[#B08D57] text-[#132018]
+                       px-8 py-3.5 rounded-sm hover:bg-[#C7A56C]
+                       transition-all duration-300 text-base font-semibold tracking-wide"
             >
-              <FaPlus />
+              <FaPlus className="text-sm" />
               Browse Books
             </Link>
           </div>
@@ -440,18 +463,20 @@ const Home = () => {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="bg-slate-900 text-white/60 py-8 border-t border-white/5">
+      <footer className="bg-[#0E1712] text-white/50 py-8 border-t border-[#B08D57]/15">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <FaBook className="text-emerald-400" />
-              <span className="text-white font-medium">BookManager</span>
-              <span className="text-xs">v2.0.0</span>
+              <FaBook className="text-[#B08D57]" />
+              <span className="text-white font-serif font-semibold">
+                BookManager
+              </span>
+              <span className="text-xs font-mono">v2.0.0</span>
             </div>
             <p className="text-sm text-center">
-              © 2026 BookManager. All rights reserved. Made with ❤️
+              © 2026 BookManager. All rights reserved. Made by Shamim
             </p>
-            <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-5 text-sm">
               <Link to="/about" className="hover:text-white transition">
                 About
               </Link>

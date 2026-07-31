@@ -1,3 +1,4 @@
+// services/api.js
 import axios from 'axios';
 
 // ✅ Environment Variable থেকে URL নিন
@@ -82,6 +83,80 @@ export const getCurrentUser = async () => {
     return response;
   } catch (error) {
     console.error('❌ Error fetching current user:', error);
+    throw error;
+  }
+};
+
+// ✅ Forgot Password APIs
+export const forgotPassword = async data => {
+  console.log('📧 Sending forgot password request:', data);
+  try {
+    const response = await api.post('/auth/forgot-password', data);
+    console.log('✅ OTP sent:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error sending forgot password:', error);
+    throw error;
+  }
+};
+
+export const verifyOTP = async data => {
+  console.log('🔐 Verifying OTP:', data);
+  try {
+    const response = await api.post('/auth/verify-otp', data);
+    console.log('✅ OTP verified:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error verifying OTP:', error);
+    throw error;
+  }
+};
+
+export const resetPassword = async data => {
+  console.log('🔑 Resetting password:', data);
+  try {
+    const response = await api.post('/auth/reset-password', data);
+    console.log('✅ Password reset:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error resetting password:', error);
+    throw error;
+  }
+};
+
+// ✅ Profile APIs
+export const updateProfile = async userData => {
+  console.log('✏️ Updating profile:', userData);
+  try {
+    const response = await api.put('/auth/profile', userData);
+    console.log('✅ Profile updated:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error updating profile:', error);
+    throw error;
+  }
+};
+
+export const changePassword = async passwordData => {
+  console.log('🔐 Changing password');
+  try {
+    const response = await api.put('/auth/change-password', passwordData);
+    console.log('✅ Password changed:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error changing password:', error);
+    throw error;
+  }
+};
+
+export const deleteAccount = async password => {
+  console.log('🗑️ Deleting account');
+  try {
+    const response = await api.delete('/auth/account', { data: { password } });
+    console.log('✅ Account deleted:', response.data);
+    return response;
+  } catch (error) {
+    console.error('❌ Error deleting account:', error);
     throw error;
   }
 };

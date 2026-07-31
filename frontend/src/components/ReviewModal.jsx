@@ -37,73 +37,86 @@ const ReviewModal = ({ book, onClose, onReviewAdded }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 dark:border-dark-700">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            ⭐ Write a Review
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
-          >
-            <FaTimes className="text-xl" />
-          </button>
-        </div>
-
-        <div className="mb-4 p-3 bg-gray-50 dark:bg-dark-700 rounded-xl">
-          <p className="font-semibold text-gray-800 dark:text-white">
-            {book.title}
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            by {book.author}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Your Rating *
-            </label>
-            <RatingStars rating={rating} onRatingChange={setRating} />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Your Review *
-            </label>
-            <textarea
-              value={comment}
-              onChange={e => setComment(e.target.value)}
-              rows="4"
-              className="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-xl 
-                       focus:ring-2 focus:ring-indigo-500 focus:border-transparent 
-                       bg-white dark:bg-dark-900 text-gray-800 dark:text-white transition"
-              placeholder="Share your thoughts about this book..."
-              required
+    <div className="fixed inset-0 bg-[#132018]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-[#F7F3E9] rounded-sm max-w-md w-full p-6 shadow-2xl border border-[#B08D57]/25 relative overflow-hidden">
+        {/* Book-spine texture bars */}
+        <div className="absolute inset-0 flex opacity-[0.05] pointer-events-none">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 border-r border-[#B08D57]"
+              style={{
+                backgroundColor: i % 3 === 0 ? '#B08D57' : 'transparent',
+              }}
             />
+          ))}
+        </div>
+
+        <div className="relative">
+          <div className="flex justify-between items-center mb-4 border-b border-[#B08D57]/30 pb-4">
+            <h2 className="font-serif text-2xl font-bold text-[#1F2E24] flex items-center gap-2">
+              <span className="text-[#B08D57]">★</span> Write a Review
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-[#8A7F68] hover:text-[#1F2E24] transition"
+            >
+              <FaTimes className="text-xl" />
+            </button>
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white py-3 rounded-xl 
-                       hover:from-indigo-700 hover:to-indigo-800 transition font-medium 
-                       shadow-md disabled:opacity-50"
-            >
-              {loading ? 'Submitting...' : 'Submit Review'}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-200 dark:bg-dark-700 text-gray-700 dark:text-gray-300 py-3 rounded-xl 
-                       hover:bg-gray-300 dark:hover:bg-dark-600 transition font-medium"
-            >
-              Cancel
-            </button>
+          <div className="mb-4 p-4 bg-white/60 border border-[#B08D57]/20 rounded-sm">
+            <p className="font-serif font-semibold text-[#1F2E24]">
+              {book.title}
+            </p>
+            <p className="text-sm text-[#8A7F68]">by {book.author}</p>
           </div>
-        </form>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-2">
+                Your Rating *
+              </label>
+              <RatingStars rating={rating} onRatingChange={setRating} />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-[#5B5347] uppercase tracking-wide mb-2">
+                Your Review *
+              </label>
+              <textarea
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+                rows="4"
+                className="w-full px-4 py-3 border border-[#B08D57]/30 rounded-sm
+                         focus:ring-2 focus:ring-[#3F6B4F]/20 focus:border-[#3F6B4F]
+                         bg-white/70 text-[#2A2A24] placeholder:text-[#8A7F68]/60 transition outline-none"
+                placeholder="Share your thoughts about this book..."
+                required
+              />
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-[#B08D57] text-[#132018] py-3 rounded-sm
+                         hover:bg-[#C7A56C] transition font-semibold tracking-wide
+                         shadow-md disabled:opacity-50"
+              >
+                {loading ? 'Submitting...' : 'Submit Review'}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-transparent border border-[#B08D57]/40 text-[#5B5347] py-3 rounded-sm
+                         hover:bg-[#B08D57]/10 transition font-semibold tracking-wide"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -10,17 +10,17 @@ import {
   FaStarHalfAlt,
 } from 'react-icons/fa';
 
-// ✅ Import local images
+//  Import local images
 import book1 from '../images/book1.jpg';
 import book2 from '../images/book2.jpg';
 import book3 from '../images/book3.jpg';
 import book4 from '../images/book4.jpg';
 
-// ✅ Fallback image if import fails
+//  Fallback image if import fails
 const fallbackImage =
-  'https://dummyimage.com/400x300/4f46e5/ffffff&text=📚+No+Cover';
+  'https://dummyimage.com/400x300/3F6B4F/F7F3E9&text=No+Cover';
 
-// ✅ Map book titles to specific images (optional)
+// Map book titles to specific images (optional)
 const getImageForBook = title => {
   const imageMap = {
     'The Great Gatsby': book1,
@@ -69,7 +69,7 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
     }
   };
 
-  // ✅ Updated renderStars with half star support
+  //  Updated renderStars with half star support
   const renderStars = (rating = 0) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -77,19 +77,19 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
 
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
-        stars.push(<FaStar key={i} className="text-yellow-400 text-xs" />);
+        stars.push(<FaStar key={i} className="text-[#B08D57] text-xs" />);
       } else if (i === fullStars && hasHalfStar) {
         stars.push(
-          <FaStarHalfAlt key={i} className="text-yellow-400 text-xs" />,
+          <FaStarHalfAlt key={i} className="text-[#B08D57] text-xs" />,
         );
       } else {
-        stars.push(<FaRegStar key={i} className="text-gray-300 text-xs" />);
+        stars.push(<FaRegStar key={i} className="text-[#B08D57]/30 text-xs" />);
       }
     }
     return stars;
   };
 
-  // ✅ Get the image source
+  //  Get the image source
   const getImageSrc = () => {
     if (coverImage && coverImage.trim() !== '') {
       return coverImage;
@@ -99,37 +99,39 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
 
   return (
     <>
-      <div className="group bg-white dark:bg-dark-800 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 border border-gray-100 dark:border-dark-700">
+      <div className="group bg-white/70 rounded-sm border border-[#B08D57]/25 hover:border-[#B08D57]/60 shadow-sm hover:shadow-lg transition-all duration-500 overflow-hidden transform hover:-translate-y-1.5">
         {/* Cover Image */}
-        <div className="relative h-56 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-700 dark:to-dark-800 overflow-hidden">
+        <div className="relative h-56 bg-[#132018] overflow-hidden">
           <img
             src={getImageSrc()}
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-full object-cover opacity-95 group-hover:scale-110 group-hover:opacity-100 transition-transform duration-500"
             onError={e => {
               e.target.src = fallbackImage;
             }}
           />
+          {/* subtle vignette to match ink theme */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#132018]/60 via-transparent to-transparent"></div>
 
           {/* Status Badge on Image */}
           <div className="absolute top-3 right-3">
             <span
-              className={`px-3 py-1 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm ${
+              className={`px-3 py-1 text-[11px] font-medium uppercase tracking-wide rounded-full backdrop-blur-sm border ${
                 isAvailable
-                  ? 'bg-emerald-500/90 text-white'
-                  : 'bg-rose-500/90 text-white'
+                  ? 'bg-[#3F6B4F]/80 text-white border-white/20'
+                  : 'bg-[#8A4A3A]/80 text-white border-white/20'
               }`}
             >
-              {isAvailable ? '✅ Available' : '📖 Borrowed'}
+              {isAvailable ? 'Available' : 'Borrowed'}
             </span>
           </div>
 
           {/* Rating Badge on Image */}
           {averageRating > 0 && (
-            <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full">
+            <div className="absolute bottom-3 left-3 bg-[#132018]/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#B08D57]/30">
               <div className="flex items-center gap-1">
-                <FaStar className="text-yellow-400 text-xs" />
-                <span className="text-white text-xs font-medium">
+                <FaStar className="text-[#B08D57] text-xs" />
+                <span className="text-white text-xs font-mono">
                   {averageRating.toFixed(1)}
                 </span>
               </div>
@@ -140,39 +142,37 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
         {/* Card Content */}
         <div className="p-5">
           <div className="flex justify-between items-start gap-2">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white line-clamp-2 flex-1">
+            <h3 className="font-serif text-lg font-bold text-[#1F2E24] line-clamp-2 flex-1">
               {title || 'Untitled'}
             </h3>
           </div>
 
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center space-x-1">
-            <span className="font-medium text-gray-600 dark:text-gray-400">
-              by
-            </span>
-            <span className="text-gray-700 dark:text-gray-300 font-medium">
+          <p className="text-[#6B6354] text-sm mt-1 flex items-center gap-1">
+            <span className="font-medium text-[#8A7F68]">by</span>
+            <span className="text-[#2A2A24] font-medium">
               {author || 'Unknown Author'}
             </span>
           </p>
 
-          <div className="flex items-center mt-2 space-x-1">
+          <div className="flex items-center mt-2 gap-1">
             {renderStars(averageRating)}
-            <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">
+            <span className="text-xs text-[#8A7F68] font-mono ml-1">
               ({averageRating ? averageRating.toFixed(1) : '0'})
             </span>
           </div>
 
           <div className="mt-3 flex flex-wrap gap-1.5">
-            <span className="text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-full border border-indigo-100 dark:border-indigo-800/50">
-              📚 {genre || 'Other'}
+            <span className="text-[11px] uppercase tracking-wide bg-[#3F6B4F]/10 text-[#3F6B4F] px-2.5 py-1 rounded-full border border-[#3F6B4F]/25">
+              {genre || 'Other'}
             </span>
             {publishedYear && (
-              <span className="text-xs bg-gray-50 dark:bg-dark-700 text-gray-600 dark:text-gray-400 px-2.5 py-1 rounded-full border border-gray-200 dark:border-dark-600">
-                📅 {publishedYear}
+              <span className="text-[11px] font-mono bg-[#B08D57]/10 text-[#8A6A2E] px-2.5 py-1 rounded-full border border-[#B08D57]/25">
+                {publishedYear}
               </span>
             )}
             {price > 0 && (
-              <span className="text-xs bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-800/50 font-semibold">
-                💰 ${price}
+              <span className="text-[11px] font-mono bg-[#B08D57]/15 text-[#8A6A2E] px-2.5 py-1 rounded-full border border-[#B08D57]/30 font-semibold">
+                ${price}
               </span>
             )}
           </div>
@@ -182,35 +182,35 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
             {isAvailable ? (
               <button
                 onClick={() => setShowBorrowModal(true)}
-                className="col-span-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white px-3 py-2 rounded-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg flex items-center justify-center space-x-1"
+                className="col-span-1 bg-[#3F6B4F] text-white px-3 py-2 rounded-sm hover:bg-[#345A42] transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
               >
                 <FaBookOpen className="text-xs" />
-                <span className="text-xs">Borrow</span>
+                <span>Borrow</span>
               </button>
             ) : (
               <button
                 disabled
-                className="col-span-1 bg-gray-200 dark:bg-dark-700 text-gray-500 dark:text-gray-500 px-3 py-2 rounded-xl cursor-not-allowed text-sm font-medium flex items-center justify-center space-x-1"
+                className="col-span-1 bg-[#B08D57]/10 text-[#8A7F68] px-3 py-2 rounded-sm cursor-not-allowed text-xs font-medium uppercase tracking-wide flex items-center justify-center border border-[#B08D57]/15"
               >
-                <span className="text-xs">Borrowed</span>
+                <span>Borrowed</span>
               </button>
             )}
 
-            {/* ✅ Review Button */}
+            {/*  Review Button */}
             <button
               onClick={() => setShowReviewModal(true)}
-              className="col-span-1 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-xl transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg flex items-center justify-center space-x-1"
+              className="col-span-1 bg-[#B08D57] hover:bg-[#C7A56C] text-[#132018] px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaStar className="text-xs" />
-              <span className="text-xs">Review</span>
+              <span>Review</span>
             </button>
 
             <button
               onClick={() => onEdit(book)}
-              className="col-span-1 bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-xl transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg flex items-center justify-center space-x-1"
+              className="col-span-1 border border-[#3F6B4F] text-[#3F6B4F] hover:bg-[#3F6B4F] hover:text-white px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaEdit className="text-xs" />
-              <span className="text-xs">Edit</span>
+              <span>Edit</span>
             </button>
 
             <button
@@ -221,10 +221,10 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
                   onDelete(_id);
                 }
               }}
-              className="col-span-1 bg-rose-500 hover:bg-rose-600 text-white px-3 py-2 rounded-xl transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg flex items-center justify-center space-x-1"
+              className="col-span-1 border border-[#8A4A3A] text-[#8A4A3A] hover:bg-[#8A4A3A] hover:text-white px-3 py-2 rounded-sm transition-all duration-300 text-xs font-medium uppercase tracking-wide flex items-center justify-center gap-1"
             >
               <FaTrash className="text-xs" />
-              <span className="text-xs">Delete</span>
+              <span>Delete</span>
             </button>
           </div>
         </div>
@@ -239,7 +239,7 @@ const BookCard = ({ book, onDelete, onEdit, onBorrow, onReviewAdded }) => {
         />
       )}
 
-      {/* ✅ Review Modal */}
+      {/* Review Modal */}
       {showReviewModal && (
         <ReviewModal
           book={book}

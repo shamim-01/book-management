@@ -26,7 +26,7 @@ const Navbar = () => {
 
   const isActive = path => location.pathname === path;
 
-  // ✅ Check if user is logged in on mount
+  //  Check if user is logged in on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -47,7 +47,7 @@ const Navbar = () => {
     }
   }, [location]);
 
-  // ✅ Logout Handler
+  //  Logout Handler
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -57,7 +57,7 @@ const Navbar = () => {
     navigate('/login');
   };
 
-  // ✅ All Navigation Links
+  //  All Navigation Links
   const allNavLinks = [
     { path: '/', icon: FaHome, label: 'Home', public: true },
     { path: '/books', icon: FaBook, label: 'Books', public: false },
@@ -67,26 +67,23 @@ const Navbar = () => {
     { path: '/about', icon: FaInfoCircle, label: 'About', public: true },
   ];
 
-  // ✅ Filter links based on login status
+  // Filter links based on login status
   const navLinks = allNavLinks.filter(link => link.public || isLoggedIn);
 
   return (
-    <nav className="bg-gradient-to-r from-emerald-800 via-green-700 to-teal-800 text-white shadow-2xl sticky top-0 z-50">
+    <nav className="bg-[#132018] text-white shadow-xl sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           {/* Brand/Logo */}
-          <Link
-            to="/"
-            className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300 group"
-          >
-            <div className="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm group-hover:bg-white/30 transition">
-              <FaBook className="w-6 h-6 text-white" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-11 h-11 border border-[#B08D57]/50 rounded-full flex items-center justify-center group-hover:bg-[#B08D57]/10 transition">
+              <FaBook className="w-4 h-4 text-[#B08D57]" />
             </div>
             <div>
-              <span className="text-xl font-bold tracking-tight text-white">
+              <span className="font-serif text-xl font-bold tracking-tight text-white">
                 Book Management
               </span>
-              <span className="hidden sm:inline-block text-xs text-white/70 ml-2 font-light">
+              <span className="hidden sm:inline-block text-xs text-[#B08D57] ml-2 font-mono">
                 v2.0
               </span>
             </div>
@@ -102,42 +99,38 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={`
-                    flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-300 relative
-                    ${
-                      active
-                        ? 'bg-white/20 backdrop-blur-sm text-white shadow-lg scale-105'
-                        : 'hover:bg-white/10 hover:scale-105 text-white/90'
-                    }
+                    flex items-center space-x-2 px-4 py-2.5 rounded-sm transition-all duration-300 relative
+                    ${active ? 'text-white' : 'hover:bg-white/5 text-white/70'}
                   `}
                 >
                   <Icon
-                    className={`text-sm ${active ? 'text-white' : 'text-white/80'}`}
+                    className={`text-sm ${active ? 'text-[#B08D57]' : 'text-white/50'}`}
                   />
-                  <span className="text-sm font-medium text-white">
+                  <span className="text-sm font-medium tracking-wide">
                     {link.label}
                   </span>
                   {active && (
-                    <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-yellow-400 rounded-full"></span>
+                    <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-[#B08D57] rounded-full"></span>
                   )}
                   {!link.public && !isLoggedIn && (
-                    <FaLock className="text-xs text-white/40 ml-1" />
+                    <FaLock className="text-xs text-white/30 ml-1" />
                   )}
                 </Link>
               );
             })}
 
-            {/* ✅ User Info & Login/Register/Logout */}
+            {/*  User Info & Login/Register/Logout */}
             {isLoggedIn ? (
               <div className="flex items-center space-x-3 ml-4">
-                <span className="text-sm text-white/80 flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">
+                <span className="text-sm text-white/70 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full border border-[#B08D57]/50 flex items-center justify-center text-sm font-medium text-[#B08D57]">
                     {userName.charAt(0).toUpperCase()}
                   </span>
                   <span className="hidden xl:inline">{userName}</span>
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/40 border border-rose-400/30 rounded-xl transition-all duration-300 hover:scale-105 text-white"
+                  className="flex items-center space-x-2 px-4 py-2.5 border border-[#8A4A3A]/50 hover:bg-[#8A4A3A]/20 rounded-sm transition-all duration-300 text-white"
                 >
                   <FaSignOutAlt className="text-sm" />
                   <span className="text-sm font-medium hidden sm:inline">
@@ -149,17 +142,17 @@ const Navbar = () => {
               <div className="flex items-center space-x-2 ml-4">
                 <Link
                   to="/login"
-                  className="flex items-center space-x-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all duration-300 hover:scale-105 text-white"
+                  className="flex items-center space-x-2 px-4 py-2.5 border border-white/20 hover:bg-white/10 rounded-sm transition-all duration-300 text-white"
                 >
                   <FaSignInAlt className="text-sm" />
                   <span className="text-sm font-medium">Login</span>
                 </Link>
                 <Link
                   to="/register"
-                  className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 rounded-xl transition-all duration-300 hover:scale-105 text-white shadow-md"
+                  className="flex items-center space-x-2 px-4 py-2.5 bg-[#B08D57] hover:bg-[#C7A56C] rounded-sm transition-all duration-300 text-[#132018] font-semibold"
                 >
                   <FaUserPlus className="text-sm" />
-                  <span className="text-sm font-medium">Register</span>
+                  <span className="text-sm">Register</span>
                 </Link>
               </div>
             )}
@@ -167,11 +160,11 @@ const Navbar = () => {
 
           {/* Mobile Actions */}
           <div className="flex items-center space-x-2 lg:hidden">
-            <button className="p-2.5 hover:bg-white/10 rounded-xl transition text-white">
+            <button className="p-2.5 hover:bg-white/10 rounded-sm transition text-white">
               <FaSearch className="w-5 h-5" />
             </button>
             <button
-              className="p-2.5 hover:bg-white/10 rounded-xl transition text-white"
+              className="p-2.5 hover:bg-white/10 rounded-sm transition text-white"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
@@ -193,14 +186,14 @@ const Navbar = () => {
           <div className="py-4 space-y-1 border-t border-white/10">
             {/* Mobile User Info */}
             {isLoggedIn && (
-              <div className="px-4 py-3 mb-2 bg-white/10 rounded-xl">
+              <div className="px-4 py-3 mb-2 border border-white/10 rounded-sm">
                 <div className="flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold">
+                  <span className="w-10 h-10 rounded-full border border-[#B08D57]/50 flex items-center justify-center text-lg font-medium text-[#B08D57]">
                     {userName.charAt(0).toUpperCase()}
                   </span>
                   <div>
                     <p className="font-medium text-white">{userName}</p>
-                    <p className="text-xs text-white/60">Logged in</p>
+                    <p className="text-xs text-white/50">Logged in</p>
                   </div>
                 </div>
               </div>
@@ -214,21 +207,21 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={`
-                    flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300
+                    flex items-center space-x-3 px-4 py-3 rounded-sm transition-all duration-300
                     ${
                       active
-                        ? 'bg-white/20 backdrop-blur-sm text-white'
-                        : 'hover:bg-white/10 text-white/90'
+                        ? 'bg-white/10 text-white'
+                        : 'hover:bg-white/5 text-white/70'
                     }
                   `}
                   onClick={() => setIsOpen(false)}
                 >
-                  <Icon className="text-lg text-white" />
-                  <span className="text-sm font-medium text-white">
-                    {link.label}
-                  </span>
+                  <Icon
+                    className={`text-lg ${active ? 'text-[#B08D57]' : 'text-white/50'}`}
+                  />
+                  <span className="text-sm font-medium">{link.label}</span>
                   {active && (
-                    <span className="ml-auto w-2 h-2 bg-yellow-400 rounded-full"></span>
+                    <span className="ml-auto w-1.5 h-1.5 bg-[#B08D57] rounded-full"></span>
                   )}
                 </Link>
               );
@@ -241,7 +234,7 @@ const Navbar = () => {
                   handleLogout();
                   setIsOpen(false);
                 }}
-                className="flex items-center space-x-3 w-full px-4 py-3 mt-2 bg-rose-500/20 hover:bg-rose-500/30 rounded-xl transition-all duration-300 text-white"
+                className="flex items-center space-x-3 w-full px-4 py-3 mt-2 border border-[#8A4A3A]/40 hover:bg-[#8A4A3A]/15 rounded-sm transition-all duration-300 text-white"
               >
                 <FaSignOutAlt className="text-lg" />
                 <span className="text-sm font-medium">Logout</span>
@@ -250,7 +243,7 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="flex items-center space-x-3 w-full px-4 py-3 hover:bg-white/10 rounded-xl transition-all duration-300 text-white/90"
+                  className="flex items-center space-x-3 w-full px-4 py-3 hover:bg-white/5 rounded-sm transition-all duration-300 text-white/80"
                   onClick={() => setIsOpen(false)}
                 >
                   <FaSignInAlt className="text-lg" />
@@ -258,11 +251,11 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="flex items-center space-x-3 w-full px-4 py-3 mt-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 hover:bg-white/10 rounded-xl transition-all duration-300 text-white"
+                  className="flex items-center space-x-3 w-full px-4 py-3 mt-1 bg-[#B08D57] hover:bg-[#C7A56C] rounded-sm transition-all duration-300 text-[#132018] font-semibold"
                   onClick={() => setIsOpen(false)}
                 >
                   <FaUserPlus className="text-lg" />
-                  <span className="text-sm font-medium">Register</span>
+                  <span className="text-sm">Register</span>
                 </Link>
               </>
             )}
@@ -271,7 +264,7 @@ const Navbar = () => {
       </div>
 
       {/* Decorative Line */}
-      <div className="h-1 bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400"></div>
+      <div className="h-[3px] bg-[#B08D57]"></div>
     </nav>
   );
 };

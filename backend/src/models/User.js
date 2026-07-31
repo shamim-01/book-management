@@ -30,6 +30,6 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// ❌ pre('save') middleware সরানো হয়েছে - Controller এ hash করা হবে
+//  pre('save') middleware - Controller  hash 
 
 module.exports = mongoose.model('User', userSchema);

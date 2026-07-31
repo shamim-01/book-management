@@ -1,4 +1,4 @@
-// backend/src/routes/uploadRoutes.js
+
 router.post(
   '/book-cover',
   protect,

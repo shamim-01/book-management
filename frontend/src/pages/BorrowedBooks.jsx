@@ -68,74 +68,88 @@ const BorrowedBooks = () => {
   const getStatusInfo = (status, dueDate) => {
     if (status === 'returned') {
       return {
-        color: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-        icon: <FaCheckCircle className="text-emerald-500" />,
+        color: 'bg-[#3F6B4F]/10 text-[#3F6B4F] border-[#3F6B4F]/25',
+        icon: <FaCheckCircle className="text-[#3F6B4F]" />,
         label: 'Returned',
       };
     }
     if (isOverdue(dueDate)) {
       return {
-        color: 'bg-rose-100 text-rose-700 border-rose-200',
-        icon: <FaExclamationCircle className="text-rose-500" />,
+        color: 'bg-[#8A4A3A]/10 text-[#8A4A3A] border-[#8A4A3A]/25',
+        icon: <FaExclamationCircle className="text-[#8A4A3A]" />,
         label: 'Overdue',
       };
     }
     return {
-      color: 'bg-teal-100 text-teal-700 border-teal-200',
-      icon: <FaClock className="text-teal-500" />,
+      color: 'bg-[#B08D57]/10 text-[#8A6A2E] border-[#B08D57]/25',
+      icon: <FaClock className="text-[#B08D57]" />,
       label: 'Borrowed',
     };
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f0f5f2] flex flex-col items-center justify-center">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-emerald-600"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <FaBook className="text-emerald-600 text-2xl" />
-          </div>
+      <div className="min-h-screen bg-[#F7F3E9] flex flex-col items-center justify-center">
+        <div className="relative h-16 w-16">
+          <div className="absolute inset-0 rounded-full border-2 border-[#3F6B4F]/20"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#3F6B4F] animate-spin"></div>
+          <FaBook className="absolute inset-0 m-auto text-[#3F6B4F] text-lg" />
         </div>
-        <p className="text-gray-500 mt-6 font-medium">
-          Loading borrowed books...
+        <p className="text-[#5B5347] mt-4 tracking-wide text-sm uppercase">
+          Loading borrowed books…
         </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f0f5f2]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-[#F7F3E9] font-sans text-[#2A2A24]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* ===== HEADER ===== */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-800 to-teal-800 rounded-2xl shadow-2xl mb-8">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-600 rounded-full blur-3xl"></div>
+        <div className="relative overflow-hidden bg-[#132018] rounded-sm shadow-xl mb-10">
+          {/* Book-spine texture bars */}
+          <div className="absolute inset-0 flex opacity-[0.08]">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 border-r border-[#B08D57]"
+                style={{
+                  backgroundColor: i % 3 === 0 ? '#B08D57' : 'transparent',
+                }}
+              />
+            ))}
           </div>
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#3F6B4F]/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-24 -left-16 w-64 h-64 bg-[#B08D57]/10 rounded-full blur-3xl"></div>
 
-          <div className="relative px-6 sm:px-8 lg:px-10 py-8 sm:py-10 lg:py-12">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="relative px-6 sm:px-8 lg:px-10 py-9 sm:py-11 lg:py-12">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5">
               <div>
-                <div className="flex items-center gap-3">
-                  <span className="text-4xl sm:text-5xl">📖</span>
+                <span className="text-[#B08D57] text-xs uppercase tracking-[0.25em]">
+                  On Loan
+                </span>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className="w-11 h-11 border border-[#B08D57]/50 rounded-full flex items-center justify-center text-[#B08D57] flex-shrink-0">
+                    <FaBook />
+                  </div>
                   <div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                    <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
                       Borrowed Books
                     </h1>
-                    <p className="text-emerald-200 text-sm sm:text-base mt-0.5">
+                    <p className="text-white/50 text-sm sm:text-base mt-0.5">
                       Track and manage borrowed books
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 mt-3">
-                  <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-white">
-                    <FaBook className="text-emerald-600" />
+                <div className="flex flex-wrap items-center gap-3 mt-4">
+                  <span className="inline-flex items-center gap-1.5 border border-white/15 px-3 sm:px-4 py-1.5 rounded-full text-xs uppercase tracking-wide text-white/70">
+                    <FaBook className="text-[#B08D57]" />
                     {borrows.length} {borrows.length === 1 ? 'book' : 'books'}{' '}
                     borrowed
                   </span>
-                  <span className="inline-flex items-center gap-1.5 bg-amber-400/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-amber-100">
-                    <FaClock className="text-amber-300" />
+                  <span className="inline-flex items-center gap-1.5 border border-[#8A4A3A]/50 bg-[#8A4A3A]/15 px-3 sm:px-4 py-1.5 rounded-full text-xs uppercase tracking-wide text-[#E0A38E]">
+                    <FaClock className="text-[#D9A566]" />
                     {
                       borrows.filter(
                         b => b.status === 'borrowed' && isOverdue(b.dueDate),
@@ -148,9 +162,9 @@ const BorrowedBooks = () => {
 
               <Link
                 to="/books"
-                className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 
-                         text-white px-5 sm:px-6 py-2.5 rounded-xl transition-all duration-300 
-                         font-medium border border-white/20 hover:scale-105 text-sm sm:text-base"
+                className="inline-flex items-center gap-2 bg-[#B08D57] hover:bg-[#C7A56C]
+                         text-[#132018] px-5 sm:px-6 py-2.5 rounded-sm transition-all duration-300
+                         font-semibold tracking-wide text-sm sm:text-base"
               >
                 <FaArrowLeft className="text-sm" />
                 Back to Books
@@ -161,19 +175,21 @@ const BorrowedBooks = () => {
 
         {/* ===== BORROWED BOOKS GRID ===== */}
         {borrows.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div className="text-7xl mb-4">📭</div>
-            <h3 className="text-2xl font-semibold text-gray-700">
+          <div className="text-center py-20 bg-white/60 border border-dashed border-[#B08D57]/40 rounded-sm">
+            <div className="w-16 h-16 mx-auto border border-[#B08D57] rounded-full flex items-center justify-center text-2xl text-[#B08D57] mb-6">
+              <FaBook />
+            </div>
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F2E24]">
               No borrowed books
             </h3>
-            <p className="text-gray-400 mt-2">
+            <p className="text-[#8A7F68] mt-3">
               You haven't borrowed any books yet
             </p>
             <Link
               to="/books"
-              className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-emerald-700 to-emerald-700 
-                       text-white px-6 py-2.5 rounded-xl hover:from-emerald-700 hover:to-emerald-800 
-                       transition-all duration-300 font-medium shadow-md hover:shadow-lg"
+              className="mt-8 inline-flex items-center gap-2 bg-[#B08D57]
+                       text-[#132018] px-6 py-2.5 rounded-sm hover:bg-[#C7A56C]
+                       transition-all duration-300 font-semibold tracking-wide"
             >
               <FaBook />
               Browse Books
@@ -190,21 +206,21 @@ const BorrowedBooks = () => {
               return (
                 <div
                   key={borrow._id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
+                  className="bg-white/70 rounded-sm border border-[#B08D57]/25 hover:border-[#B08D57]/50 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden hover:-translate-y-1"
                 >
                   {/* Card Header - Book Info */}
-                  <div className="p-5 pb-3 border-b border-gray-100">
+                  <div className="p-5 pb-3 border-b border-[#B08D57]/20">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-bold text-gray-800 truncate">
+                        <h3 className="font-serif text-lg font-bold text-[#1F2E24] truncate">
                           {borrow.book?.title || 'Unknown Book'}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#8A7F68]">
                           by {borrow.book?.author || 'Unknown Author'}
                         </p>
                       </div>
                       <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusInfo.color} shrink-0 ml-2`}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] uppercase tracking-wide font-medium border ${statusInfo.color} shrink-0 ml-2`}
                       >
                         {statusInfo.icon}
                         {statusInfo.label}
@@ -215,22 +231,22 @@ const BorrowedBooks = () => {
                   {/* Card Body - Borrower Details */}
                   <div className="p-5 space-y-2.5">
                     <div className="flex items-center gap-3 text-sm">
-                      <FaUser className="text-gray-400 w-4" />
-                      <span className="text-gray-700">
+                      <FaUser className="text-[#B08D57] w-4" />
+                      <span className="text-[#2A2A24]">
                         {borrow.borrowerName}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-3 text-sm">
-                      <FaEnvelope className="text-gray-400 w-4" />
-                      <span className="text-gray-600 truncate">
+                      <FaEnvelope className="text-[#B08D57] w-4" />
+                      <span className="text-[#6B6354] truncate">
                         {borrow.borrowerEmail}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-3 text-sm">
-                      <FaCalendarAlt className="text-gray-400 w-4" />
-                      <span className="text-gray-700">
+                      <FaCalendarAlt className="text-[#B08D57] w-4" />
+                      <span className="text-[#2A2A24] font-mono">
                         Due:{' '}
                         {new Date(borrow.dueDate).toLocaleDateString('en-US', {
                           year: 'numeric',
@@ -243,9 +259,9 @@ const BorrowedBooks = () => {
                     {/* Overdue Warning */}
                     {borrow.status === 'borrowed' &&
                       isOverdue(borrow.dueDate) && (
-                        <div className="mt-2 p-2.5 bg-rose-50 border border-rose-200 rounded-lg">
-                          <p className="text-xs text-rose-700 flex items-center gap-1.5">
-                            <FaExclamationCircle className="text-rose-500" />
+                        <div className="mt-2 p-2.5 bg-[#8A4A3A]/10 border border-[#8A4A3A]/25 rounded-sm">
+                          <p className="text-xs text-[#8A4A3A] flex items-center gap-1.5">
+                            <FaExclamationCircle />
                             <span className="font-medium">
                               Overdue by {overdueDays}{' '}
                               {overdueDays === 1 ? 'day' : 'days'}
@@ -256,8 +272,8 @@ const BorrowedBooks = () => {
 
                     {/* Notes */}
                     {borrow.notes && (
-                      <div className="mt-1 p-2.5 bg-gray-50 border border-gray-100 rounded-lg">
-                        <p className="text-xs text-gray-500 italic">
+                      <div className="mt-1 p-2.5 bg-[#B08D57]/10 border border-[#B08D57]/20 rounded-sm">
+                        <p className="text-xs text-[#6B6354] italic">
                           "{borrow.notes}"
                         </p>
                       </div>
@@ -270,16 +286,16 @@ const BorrowedBooks = () => {
                       <button
                         onClick={() => handleReturn(borrow._id)}
                         disabled={returning === borrow._id}
-                        className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+                        className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-sm font-medium text-xs uppercase tracking-wide transition-all duration-300 ${
                           returning === borrow._id
-                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-emerald-700 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-600 shadow-md hover:shadow-lg hover:scale-[1.02]'
+                            ? 'bg-[#B08D57]/10 text-[#8A7F68] cursor-not-allowed'
+                            : 'bg-[#3F6B4F] text-white hover:bg-[#345A42]'
                         }`}
                       >
                         {returning === borrow._id ? (
                           <>
                             <FaSpinner className="animate-spin" />
-                            Returning...
+                            Returning…
                           </>
                         ) : (
                           <>
@@ -289,7 +305,7 @@ const BorrowedBooks = () => {
                         )}
                       </button>
                     ) : (
-                      <div className="w-full py-2.5 text-center text-sm text-emerald-700 font-medium bg-emerald-50 rounded-xl">
+                      <div className="w-full py-2.5 text-center text-xs uppercase tracking-wide text-[#3F6B4F] font-medium bg-[#3F6B4F]/10 rounded-sm border border-[#3F6B4F]/20">
                         <FaCheckCircle className="inline mr-2" />
                         Returned on{' '}
                         {new Date(borrow.returnDate).toLocaleDateString(

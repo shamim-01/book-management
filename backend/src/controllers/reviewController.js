@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); // ✅ এই লাইন যোগ করুন
+const mongoose = require('mongoose'); 
 const Review = require('../models/Review');
 const Book = require('../models/Book');
 
@@ -188,7 +188,7 @@ exports.deleteReview = async (req, res) => {
   }
 };
 
-// ✅ Helper function to update book average rating
+//  Helper function to update book average rating
 const updateBookRating = async bookId => {
   const result = await Review.aggregate([
     { $match: { book: new mongoose.Types.ObjectId(bookId) } },

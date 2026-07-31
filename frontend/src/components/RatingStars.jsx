@@ -42,16 +42,16 @@ const RatingStars = ({
           disabled={readonly}
         >
           {star <= displayRating ? (
-            <FaStar className={`${size} text-yellow-400`} />
+            <FaStar className={`${size} text-[#B08D57]`} />
           ) : star - 0.5 <= displayRating ? (
-            <FaStarHalfAlt className={`${size} text-yellow-400`} />
+            <FaStarHalfAlt className={`${size} text-[#B08D57]`} />
           ) : (
-            <FaRegStar className={`${size} text-gray-300 dark:text-gray-600`} />
+            <FaRegStar className={`${size} text-[#B08D57]/30`} />
           )}
         </button>
       ))}
       {rating > 0 && (
-        <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+        <span className="text-xs text-[#8A7F68] font-mono ml-1">
           ({rating.toFixed(1)})
         </span>
       )}

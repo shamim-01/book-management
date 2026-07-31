@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { FaBookOpen, FaTimes } from 'react-icons/fa';
 
 const BorrowModal = ({ book, onClose, onBorrow }) => {
   const [formData, setFormData] = useState({
@@ -56,26 +57,33 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">📖 Borrow Book</h2>
+    <div className="fixed inset-0 bg-[#132018]/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-[#F7F3E9] rounded-sm max-w-md w-full p-6 max-h-[90vh] overflow-y-auto border border-[#B08D57]/30 shadow-2xl">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="font-serif text-2xl font-bold text-[#1F2E24] flex items-center gap-2.5">
+            <span className="w-9 h-9 border border-[#3F6B4F] rounded-full flex items-center justify-center text-[#3F6B4F] text-sm">
+              <FaBookOpen />
+            </span>
+            Borrow Book
+          </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
+            className="text-[#8A7F68] hover:text-[#2A2A24] transition text-lg"
           >
-            ×
+            <FaTimes />
           </button>
         </div>
 
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-          <p className="font-semibold">{book.title}</p>
-          <p className="text-sm text-gray-600">by {book.author}</p>
+        <div className="mb-5 p-3.5 bg-white/70 border border-[#B08D57]/25 rounded-sm">
+          <p className="font-serif font-semibold text-[#1F2E24]">
+            {book.title}
+          </p>
+          <p className="text-sm text-[#6B6354]">by {book.author}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-[#6B6354] uppercase tracking-wide mb-1.5">
               Borrower Name *
             </label>
             <input
@@ -83,14 +91,14 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
               name="borrowerName"
               value={formData.borrowerName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white text-[#2A2A24] focus:outline-none focus:border-[#3F6B4F] transition"
               placeholder="Enter borrower name"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-[#6B6354] uppercase tracking-wide mb-1.5">
               Borrower Email *
             </label>
             <input
@@ -98,14 +106,14 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
               name="borrowerEmail"
               value={formData.borrowerEmail}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white text-[#2A2A24] focus:outline-none focus:border-[#3F6B4F] transition"
               placeholder="Enter borrower email"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-[#6B6354] uppercase tracking-wide mb-1.5">
               Due Date (Optional)
             </label>
             <input
@@ -113,13 +121,13 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white text-[#2A2A24] focus:outline-none focus:border-[#3F6B4F] transition"
               min={new Date().toISOString().split('T')[0]}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-[#6B6354] uppercase tracking-wide mb-1.5">
               Notes (Optional)
             </label>
             <textarea
@@ -127,7 +135,7 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
               value={formData.notes}
               onChange={handleChange}
               rows="2"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 border border-[#B08D57]/30 rounded-sm bg-white text-[#2A2A24] focus:outline-none focus:border-[#3F6B4F] transition"
               placeholder="Any special notes..."
             />
           </div>
@@ -136,14 +144,14 @@ const BorrowModal = ({ book, onClose, onBorrow }) => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition font-medium disabled:opacity-50"
+              className="flex-1 bg-[#3F6B4F] text-white py-2.5 rounded-sm hover:bg-[#345A42] transition text-sm font-medium uppercase tracking-wide disabled:opacity-50"
             >
-              {loading ? 'Processing...' : 'Confirm Borrow'}
+              {loading ? 'Processing…' : 'Confirm Borrow'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition font-medium"
+              className="flex-1 border border-[#B08D57]/40 text-[#6B6354] py-2.5 rounded-sm hover:bg-[#B08D57]/10 transition text-sm font-medium uppercase tracking-wide"
             >
               Cancel
             </button>

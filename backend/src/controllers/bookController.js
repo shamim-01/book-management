@@ -1,6 +1,6 @@
 const Book = require('../models/Book');
 
-// ✅ getBooks ফাংশনটি সঠিকভাবে export হয়েছে কিনা চেক করুন
+// getBooks
 exports.getBooks = async (req, res) => {
   try {
     const books = await Book.find().sort({ createdAt: -1 });
@@ -17,7 +17,7 @@ exports.getBooks = async (req, res) => {
   }
 };
 
-// ✅ getBook ফাংশন
+// getBook 
 exports.getBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -39,7 +39,7 @@ exports.getBook = async (req, res) => {
   }
 };
 
-// ✅ createBook ফাংশন
+//  createBook 
 exports.createBook = async (req, res) => {
   try {
     console.log('📝 Creating book:', req.body);
@@ -73,7 +73,7 @@ exports.createBook = async (req, res) => {
   }
 };
 
-// ✅ updateBook ফাংশন
+//  updateBook 
 exports.updateBook = async (req, res) => {
   try {
     const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
@@ -100,7 +100,7 @@ exports.updateBook = async (req, res) => {
   }
 };
 
-// ✅ deleteBook ফাংশন
+// deleteBook
 exports.deleteBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);

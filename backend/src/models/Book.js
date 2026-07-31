@@ -68,7 +68,7 @@ const bookSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    // ✅ এই ফিল্ডগুলো রাখুন (Virtual না করে Real Field হিসেবে)
+    // (Virtual not Real Field) 
     averageRating: {
       type: Number,
       default: 0,
@@ -85,14 +85,12 @@ const bookSchema = new mongoose.Schema(
   },
 );
 
-// ✅ Index for search
+// Index for search
 bookSchema.index({ title: 'text', author: 'text' });
 
-// ✅ Remove virtual definitions (কারণ আমরা Real Field ব্যবহার করছি)
-// bookSchema.virtual('averageRating').get(function () { ... });
-// bookSchema.virtual('reviewsCount').get(function () { ... });
 
-// Enable virtuals in JSON (যদি কোনো virtual থাকে)
+
+// Enable virtuals in JSON and Object outputs
 bookSchema.set('toJSON', { virtuals: true });
 bookSchema.set('toObject', { virtuals: true });
 
