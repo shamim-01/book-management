@@ -1,4 +1,3 @@
-// backend/src/controllers/historyController.js
 const ReadingHistory = require('../models/ReadingHistory');
 const Book = require('../models/Book');
 

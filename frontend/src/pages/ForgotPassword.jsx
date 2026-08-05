@@ -1,4 +1,4 @@
-// pages/ForgotPassword.jsx
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
   const [timer, setTimer] = useState(0);
   const navigate = useNavigate();
 
-  // ✅ Step 1: Send OTP
+  //  Step 1: Send OTP
   const handleSendOTP = async e => {
     e.preventDefault();
     setLoading(true);
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // ✅ Step 2: Verify OTP
+  //  Step 2: Verify OTP
   const handleVerifyOTP = async e => {
     e.preventDefault();
     setLoading(true);
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // ✅ Step 3: Reset Password
+  //  Step 3: Reset Password
   const handleResetPassword = async e => {
     e.preventDefault();
 
@@ -86,7 +86,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // ✅ Resend OTP
+  //  Resend OTP
   const handleResendOTP = async () => {
     setResendLoading(true);
     try {

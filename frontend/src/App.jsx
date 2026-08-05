@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -11,7 +10,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Books from './pages/Books';
-import BookDetails from './pages/BookDetails'; // ✅ যোগ করুন
+import BookDetails from './pages/BookDetails';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -73,7 +72,7 @@ function App() {
             }
           />
 
-          {/* ✅ Book Details Route - NEW */}
+          {/* Book Details Route - NEW */}
           <Route
             path="/books/:id"
             element={

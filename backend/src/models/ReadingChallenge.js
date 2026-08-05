@@ -39,7 +39,7 @@ const ReadingChallengeSchema = new mongoose.Schema(
   },
 );
 
-// প্রতি বছর এক ইউজার এক চ্যালেঞ্জ
+// one year challagene
 ReadingChallengeSchema.index({ user: 1, year: 1 }, { unique: true });
 
 module.exports = mongoose.model('ReadingChallenge', ReadingChallengeSchema);

@@ -1,4 +1,3 @@
-// backend/src/controllers/challengeController.js
 const ReadingChallenge = require('../models/ReadingChallenge');
 
 // @desc    Get user's reading challenge

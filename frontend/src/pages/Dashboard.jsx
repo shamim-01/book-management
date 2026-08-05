@@ -1,4 +1,3 @@
-// pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import {
   getDashboardStats,
@@ -16,7 +15,7 @@ import {
   FaArrowUp,
   FaHeart,
   FaStar,
-  FaBullseye, // ✅ FaTarget এর পরিবর্তে FaBullseye
+  FaBullseye,
   FaTrophy,
   FaHistory,
   FaExclamationCircle,

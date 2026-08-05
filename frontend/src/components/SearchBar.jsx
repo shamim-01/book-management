@@ -5,13 +5,13 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSearch = e => {
     e.preventDefault();
-    console.log('🔍 Searching for:', query); // ✅ Debug
+    console.log('🔍 Searching for:', query);
     onSearch(query);
   };
 
   const handleClear = () => {
     setQuery('');
-    console.log('🧹 Clearing search'); // ✅ Debug
+    console.log('🧹 Clearing search');
     onSearch('');
   };
 

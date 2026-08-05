@@ -1,4 +1,3 @@
-// pages/Books.js
 import React, { useState, useEffect } from 'react';
 import {
   getBooks,
@@ -63,7 +62,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Check wishlist status for all books
+  //  Check wishlist status for all books
   const checkWishlistStatus = async booksData => {
     try {
       const status = {};
@@ -81,7 +80,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Add to Wishlist
+  //  Add to Wishlist
   const handleAddToWishlist = async bookId => {
     setAddingToWishlist(bookId);
     try {
@@ -96,7 +95,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Remove from Wishlist
+  //  Remove from Wishlist
   const handleRemoveFromWishlist = async bookId => {
     setAddingToWishlist(bookId);
     try {
@@ -136,7 +135,7 @@ const Books = () => {
     setFilteredBooks(filtered);
   };
 
-  // ✅ Add Book
+  //  Add Book
   const handleAddBook = async bookData => {
     console.log('📝 Adding book:', bookData);
     try {
@@ -154,7 +153,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Update Book
+  //  Update Book
   const handleUpdateBook = async bookData => {
     console.log('✏️ Updating book:', editingBook?._id);
     try {
@@ -174,7 +173,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Submit
+  //  Submit
   const handleSubmit = async bookData => {
     console.log('📤 Form submitted:', bookData);
     if (editingBook) {
@@ -184,7 +183,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Delete
+  //  Delete
   const handleDelete = async id => {
     try {
       await deleteBook(id);
@@ -203,7 +202,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Edit
+  //  Edit
   const handleEdit = book => {
     console.log('✏️ Edit clicked:', book);
     setEditingBook(book);
@@ -228,7 +227,7 @@ const Books = () => {
     }
   };
 
-  // ✅ Review Added Handler
+  // Review Added Handler
   const handleReviewAdded = async () => {
     console.log('⭐ Review added, refreshing books...');
     await fetchBooks();

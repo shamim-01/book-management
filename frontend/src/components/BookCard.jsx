@@ -1,4 +1,3 @@
-// components/BookCard.js
 import React, { useState, useEffect } from 'react';
 import BorrowModal from './BorrowModal';
 import ReviewModal from './ReviewModal';
@@ -61,7 +60,7 @@ const BookCard = ({
   const [showBorrowModal, setShowBorrowModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
-  // ✅ Reading History States
+  // Reading History States
   const [readingState, setReadingState] = useState({
     status: null,
     historyId: null,
@@ -87,7 +86,7 @@ const BookCard = ({
     coverImage,
   } = book;
 
-  // ✅ Check reading status on mount
+  // Check reading status on mount
   useEffect(() => {
     checkReadingStatus();
   }, [_id]);
@@ -111,7 +110,7 @@ const BookCard = ({
     }
   };
 
-  // ✅ Start Reading
+  //  Start Reading
   const handleStartReading = async () => {
     setReadingState(prev => ({ ...prev, loading: true }));
     try {
@@ -133,7 +132,7 @@ const BookCard = ({
     }
   };
 
-  // ✅ Update Progress
+  //  Update Progress
   const handleUpdateProgress = async () => {
     if (!readingState.historyId || newPages <= 0) {
       toast.error('Please enter valid pages');
@@ -160,7 +159,7 @@ const BookCard = ({
     }
   };
 
-  // ✅ Finish Reading
+  //  Finish Reading
   const handleFinishReading = async () => {
     setReadingState(prev => ({ ...prev, loading: true }));
     try {
@@ -229,7 +228,7 @@ const BookCard = ({
     }
   };
 
-  // ✅ Render Reading Status Badge
+  // Render Reading Status Badge
   const renderReadingStatus = () => {
     if (readingState.status === 'completed') {
       return (
@@ -264,7 +263,7 @@ const BookCard = ({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#132018]/60 via-transparent to-transparent"></div>
 
-          {/* ✅ Reading Status Badge on Image */}
+          {/*  Reading Status Badge on Image */}
           <div className="absolute top-3 left-3 flex flex-col gap-1">
             <span
               className={`px-3 py-1 text-[11px] font-medium uppercase tracking-wide rounded-full backdrop-blur-sm border ${
@@ -345,7 +344,7 @@ const BookCard = ({
             )}
           </div>
 
-          {/* ✅ Reading Action Buttons */}
+          {/*  Reading Action Buttons */}
           <div className="mt-3">
             {readingState.status === 'completed' ? (
               <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-sm p-2">

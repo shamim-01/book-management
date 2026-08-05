@@ -23,7 +23,6 @@ const WishlistSchema = new mongoose.Schema(
   },
 );
 
-// এক ইউজার এক বই একবারই wishlist এ যোগ করতে পারবে
 WishlistSchema.index({ user: 1, book: 1 }, { unique: true });
 
 module.exports = mongoose.model('Wishlist', WishlistSchema);

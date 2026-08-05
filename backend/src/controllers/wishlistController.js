@@ -1,4 +1,3 @@
-// backend/src/controllers/wishlistController.js
 const Wishlist = require('../models/Wishlist');
 const Book = require('../models/Book');
 

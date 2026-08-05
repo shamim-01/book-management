@@ -1,4 +1,3 @@
-// components/ReadingChallenge.jsx
 import React, { useState, useEffect } from 'react';
 import {
   FaTrophy,

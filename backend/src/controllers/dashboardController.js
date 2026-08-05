@@ -7,12 +7,12 @@ exports.getStats = async (req, res) => {
   try {
     console.log('📊 ===== DASHBOARD STATS =====');
 
-    // ✅ Check MongoDB Connection
+    //  Check MongoDB Connection
     const db = mongoose.connection;
     console.log('📊 MongoDB Connection State:', db.readyState);
     console.log('📊 Database Name:', db.name);
 
-    // ✅ Method 1: Direct MongoDB Query (Most Reliable)
+    //  Method 1: Direct MongoDB Query (Most Reliable)
     const dbInstance = mongoose.connection.db;
     const collection = dbInstance.collection('books');
 
@@ -20,11 +20,11 @@ exports.getStats = async (req, res) => {
     const totalBooksNative = await collection.countDocuments();
     console.log('📚 Native Count:', totalBooksNative);
 
-    // ✅ Method 2: Mongoose countDocuments
+    //  Method 2: Mongoose countDocuments
     const totalBooksMongoose = await Book.countDocuments();
     console.log('📚 Mongoose Count:', totalBooksMongoose);
 
-    // ✅ Method 3: Find all books (to verify)
+    //  Method 3: Find all books (to verify)
     const allBooks = await Book.find().select('title author isAvailable');
     console.log('📚 All Books Found:', allBooks.length);
     console.log('📚 Book Titles:', allBooks.map(b => b.title).join(', '));
